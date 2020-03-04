@@ -2,6 +2,7 @@ package hr.fer.zemris.math.vector
 
 import hr.fer.zemris.math.exceptions.CrossProductIncompatibilityException
 import hr.fer.zemris.math.exceptions.IncompatibleVectorsException
+import hr.fer.zemris.math.exceptions.VectorsCannotHaveZeroDimension
 import java.lang.IndexOutOfBoundsException
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -11,6 +12,10 @@ private const val CROSS_PRODUCT_DIMENSION = 3
 data class Vector(
     private val values: FloatArray
 ) {
+
+    init {
+        if (values.isEmpty()) throw VectorsCannotHaveZeroDimension()
+    }
 
     val dimension = values.size
 

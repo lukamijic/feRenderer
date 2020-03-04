@@ -5,6 +5,9 @@ import java.lang.RuntimeException
 
 sealed class MathException(message: String) : RuntimeException(message)
 
+class VectorsCannotHaveZeroDimension()
+    : MathException("Vector must have more than 1 dimension")
+
 class IncompatibleVectorsException(dimension1: Int, dimension2: Int)
     : MathException("Vectors with dimensions $dimension1 and $dimension2 are not compatible")
 
