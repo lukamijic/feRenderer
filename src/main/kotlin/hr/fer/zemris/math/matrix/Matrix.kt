@@ -3,7 +3,6 @@ package hr.fer.zemris.math.matrix
 import hr.fer.zemris.math.exceptions.MatricesAreNotCompatibleForMultiplicationException
 import hr.fer.zemris.math.exceptions.MatricesAreNotTheSameDimensionException
 import hr.fer.zemris.math.exceptions.MatrixCreationException
-import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 
 data class Matrix(
@@ -11,8 +10,12 @@ data class Matrix(
 ) {
 
     init {
+        if (values.isEmpty()) throw MatrixCreationException("Number of rows can't be 0")
+
         val areRowsSameSize = values.asSequence().map(FloatArray::lastIndex).distinct().count() == 1
-        if (!areRowsSameSize) throw MatrixCreationException()
+        if (!areRowsSameSize) throw MatrixCreationException("All rows must be equal size")
+
+        if (values.first().isEmpty()) throw MatrixCreationException("Rows must have more than 0 value")
     }
 
     val rows = values.size
@@ -21,13 +24,13 @@ data class Matrix(
 
     operator fun get(row: Int, column: Int) =
         if (row >= rows || column >= columns) {
-            throw IllegalArgumentException("Matrix position ($row, $column) is out of bounds ($rows, $columns)")
+            throw IndexOutOfBoundsException("Matrix position ($row, $column) is out of bounds ($rows, $columns)")
         } else {
             values[row][column]
         }
 
     operator fun plus(other: Matrix) =
-        if (areMatrixTheSameDimension(this, other)) {
+        if (!areMatrixTheSameDimension(this, other)) {
             throw MatricesAreNotTheSameDimensionException(this, other)
         } else {
             Matrix(
@@ -36,7 +39,7 @@ data class Matrix(
         }
 
     operator fun minus(other: Matrix) =
-        if (areMatrixTheSameDimension(this, other)) {
+        if (!areMatrixTheSameDimension(this, other)) {
             throw MatricesAreNotTheSameDimensionException(this, other)
         } else {
             Matrix(
