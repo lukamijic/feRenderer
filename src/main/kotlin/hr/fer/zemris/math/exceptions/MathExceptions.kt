@@ -14,7 +14,7 @@ class IncompatibleVectorsException(dimension1: Int, dimension2: Int)
 class CrossProductIncompatibilityException(dimension1: Int, dimension2: Int)
     : MathException("To calculate cross product both vectors must have dimension three, given vectors had $dimension1 and $dimension2")
 
-class MatrixCreationException()
+class MatrixCreationException(message: String)
     : MathException("All rows must be equal size")
 
 class MatricesAreNotTheSameDimensionException(m1: Matrix, m2: Matrix)
