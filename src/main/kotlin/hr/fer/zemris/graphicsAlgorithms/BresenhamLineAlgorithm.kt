@@ -5,69 +5,6 @@ import java.util.*
 
 object BresenhamLineAlgorithm {
 
-    /*private fun bresenhamCalculateLine0To90(s: Point, e: Point): List<Point> =
-        LinkedList<Point>().apply {
-            if (e.y - s.y <= e.x - s.x) {
-                val (xs, ys) = s
-                val (xe, ye) = e
-
-                val a = 2 * (ye - ys)
-                var currY = ys
-                var errorY = -(xe - xs)
-                val correction = -2 * (xe - xs)
-
-                (xs..xe).forEach { x ->
-                    add(Point(x, currY))
-                    errorY += a
-                    if (errorY >= 0) {
-                        errorY += correction
-                        currY++
-                    }
-                }
-            } else {
-                val (ys, xs) = s
-                val (ye, xe) = e
-
-                val a = 2 * (ye - ys)
-                var currY = ys
-                var errorY = -(xe - xs)
-                val correction = -2 * (xe - xs)
-
-                (xs..xe).forEach { x ->
-                    add(Point(currY, x))
-                    errorY += a
-                    if (errorY >= 0) {
-                        errorY += correction
-                        currY++
-                    }
-                }
-            }
-        }
-
-    private fun bresenhamCalculateLinePoints0ToMinus90(s: Point, e: Point): List<Point> =
-        LinkedList<Point>().apply {
-            if (s.y - e.y <= e.x - s.x) {
-                val (xs, ys) = s
-                val (xe, ye) = e
-
-                val a = 2 * (ye - ys)
-                var currY = ys
-                var errorY = (xe - xs)
-                val correction = 2 * (xe - xs)
-
-                (xs..xe).forEach { x ->
-                    add(Point(x, currY))
-                    errorY += a
-                    if(errorY <= 0) {
-                        errorY += correction
-                        currY--
-                    }
-                }
-            } else {
-                val (ys, cs) = s
-            }
-        }*/
-
     fun bresenhamCalculateLine(start: Point, end: Point): List<Point> =
         when {
             start.x <= end.x ->
