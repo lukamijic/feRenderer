@@ -15,9 +15,14 @@ data class RGB(
 
         val BLACK = RGB(0.toByte(), 0.toByte(), 0.toByte())
         val WHITE = RGB(0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte())
-        val RED = RGB(0xFF.toByte(), 0.toByte(), 0.toByte())
-        val GREEN = RGB(0.toByte(), 0xFF.toByte(), 0.toByte())
-        val BLUE = RGB(0.toByte(), 0.toByte(), 0xFF.toByte())
+
+        val RED = RGB(0xFF.toByte(), 0x00.toByte(), 0x00.toByte())
+        val GREEN = RGB(0x00.toByte(), 0xFF.toByte(), 0x00.toByte())
+        val BLUE = RGB(0x00.toByte(), 0x00.toByte(), 0xFF.toByte())
+
+        val MAGENTA = RGB(0xFF.toByte(), 0x00.toByte(), 0xFF.toByte())
+        val YELLOW = RGB(0xFF.toByte(), 0xFF.toByte(), 0x00.toByte())
+        val CYAN = RGB(0x00.toByte(), 0xFF.toByte(), 0xFF.toByte())
     }
 
     fun toColor(): Color {
