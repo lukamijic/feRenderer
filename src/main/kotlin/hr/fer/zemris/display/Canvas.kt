@@ -2,8 +2,11 @@ package hr.fer.zemris.display
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.color.RGB
+import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinates
+import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
 import hr.fer.zemris.model.Point
+import hr.fer.zemris.model.Triangle
 import java.lang.IndexOutOfBoundsException
 import java.util.*
 
@@ -38,13 +41,44 @@ class Canvas(
     fun drawLine(p1: Point, p2: Point, color: Color) =
         drawLine(p1, p2, color.toRGB())
 
-    fun drawTriangle(p1: Point, p2: Point, p3: Point, color: Color) {
-        drawLine(p1, p2, color)
-        drawLine(p1, p3, color)
-        drawLine(p2, p3, color)
+    fun drawTriangle(triangle: Triangle, color: Color) =
+        with(triangle) {
+            drawLine(p1, p2, color)
+            drawLine(p1, p3, color)
+            drawLine(p2, p3, color)
+        }
+
+    fun fillTriangle(triangle: Triangle, rgb: RGB) =
+        fillTriangle(triangle) { _, _ -> rgb }
+
+    fun fillTriangle(triangle: Triangle, color: Color) =
+        fillTriangle(triangle, color.toRGB())
+
+    fun fillTriangle(triangle: Triangle, rgb1: RGB, rgb2: RGB, rgb3: RGB) =
+        fillTriangle(triangle) { i, j ->
+            val barycentricCoordinates = BarycentricCoordinatesCalculator.calculateBarycentricCoordinate(triangle, i, j)
+            RGB(
+                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.r, rgb2.r, rgb3.r, barycentricCoordinates),
+                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.g, rgb2.g, rgb3.g, barycentricCoordinates),
+                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.b, rgb2.b, rgb3.b, barycentricCoordinates)
+            )
+        }
+
+    fun fillTriangle(triangle: Triangle, c1: Color, c2: Color, c3: Color) =
+        fillTriangle(triangle, c1.toRGB(), c2.toRGB(), c3.toRGB())
+
+    fun clear(rgb: RGB) = Arrays.fill(rgbComponents, rgb)
+
+    fun clear(color: Color) = Arrays.fill(rgbComponents, color.toRGB())
+
+    fun fillRGBIntArray(dest: IntArray) {
+        for (i in 0 until width * height) {
+            dest[i] = rgbComponents[i].toColor().value
+        }
     }
 
-    fun fillTriangle(p1: Point, p2: Point, p3: Point, color: Color) {
+    private fun fillTriangle(triangle: Triangle, colorGetterForPixel: (Int, Int) -> RGB) {
+        val (p1, p2, p3) = triangle
         val lowestXForY = mutableMapOf<Int, Int>()
         val highestXForY = mutableMapOf<Int, Int>()
 
@@ -63,17 +97,7 @@ class Canvas(
         }
 
         lowestXForY.forEach { (y: Int, x: Int) ->
-            scanLine(x, highestXForY[y]!!, y, color)
-        }
-    }
-
-    fun clear(rgb: RGB) = Arrays.fill(rgbComponents, rgb)
-
-    fun clear(color: Color) = Arrays.fill(rgbComponents, color.toRGB())
-
-    fun fillRGBIntArray(dest: IntArray) {
-        for (i in 0 until width * height) {
-            dest[i] = rgbComponents[i].toColor().value
+            scanLine(x, highestXForY[y]!!, y) { i, j -> colorGetterForPixel(i, j)}
         }
     }
 
@@ -83,12 +107,12 @@ class Canvas(
     /**
      * This methods works correctly if startX is before endX
      */
-    private fun scanLine(startX: Int, endX: Int, y: Int, color: Color) {
+    private fun scanLine(startX: Int, endX: Int, y: Int, colorGetter: (Int, Int) -> RGB) {
         if ((y in 0 until height).not()) return
         val xs = if(startX < 0) 0 else startX
         val xe = if(endX >= width) width - 1 else endX
 
-        (xs..xe).forEach { x -> drawPixel(x, y, color) }
+        (xs..xe).forEach { x -> drawPixel(x, y, colorGetter(x, y)) }
     }
 
 }
