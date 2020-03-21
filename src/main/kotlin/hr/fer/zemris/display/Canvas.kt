@@ -2,11 +2,10 @@ package hr.fer.zemris.display
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.color.RGB
-import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinates
 import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
-import hr.fer.zemris.model.Point
-import hr.fer.zemris.model.Triangle
+import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.geometry.model.Triangle
 import java.lang.IndexOutOfBoundsException
 import java.util.*
 

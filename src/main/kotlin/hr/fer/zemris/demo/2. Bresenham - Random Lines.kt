@@ -4,9 +4,6 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.demo.util.randomColor
 import hr.fer.zemris.demo.util.randomPoint
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.model.Point
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 private val pointRange = -1200..1200
 

@@ -1,7 +1,7 @@
 package hr.fer.zemris.demo.util
 
 import hr.fer.zemris.color.Color
-import hr.fer.zemris.model.Point
+import hr.fer.zemris.geometry.model.Point
 import kotlin.random.Random
 import kotlin.random.nextInt
 

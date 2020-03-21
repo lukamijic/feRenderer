@@ -1,6 +1,6 @@
 package hr.fer.zemris.graphicsAlgorithms
 
-import hr.fer.zemris.model.Point
+import hr.fer.zemris.geometry.model.Point
 import java.util.*
 
 object BresenhamLineAlgorithm {
@@ -50,7 +50,9 @@ object BresenhamLineAlgorithm {
             var errorY = -(xe - xs)
 
             for (x in xs..xe) {
-                if (!shouldSwap) add(Point(x, currentY)) else add(Point(currentY, x))
+                if (!shouldSwap) add(Point(x, currentY)) else add(
+                    Point(currentY, x)
+                )
                 errorY += a
                 if (errorY >= 0) {
                     errorY += correction
@@ -86,7 +88,9 @@ object BresenhamLineAlgorithm {
             var errorY = xe - xs
 
             for (x in xs..xe) {
-                if (!shouldSwap) add(Point(x, currentY)) else add(Point(currentY, x))
+                if (!shouldSwap) add(Point(x, currentY)) else add(
+                    Point(currentY, x)
+                )
                 errorY += a
                 if (errorY <= 0) {
                     errorY += correction

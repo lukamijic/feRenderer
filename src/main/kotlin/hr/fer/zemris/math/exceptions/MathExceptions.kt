@@ -22,3 +22,6 @@ class MatricesAreNotTheSameDimensionException(m1: Matrix, m2: Matrix)
 
 class MatricesAreNotCompatibleForMultiplicationException(m1: Matrix, m2: Matrix)
     : MathException("Matrices (${m1.rows}, ${m1.columns}) and (${m2.rows}, ${m2.columns}) are compatible for multiplication.")
+
+class MatrixCannotBeTranformedIntoAVector(m: Matrix)
+    : MathException("Matrix (${m.rows}, ${m.columns} cannot be transformed into a vecotr")
