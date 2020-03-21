@@ -1,7 +1,7 @@
 package hr.fer.zemris.graphicsAlgorithms
 
 import hr.fer.zemris.extensions.toUnsignedInt
-import hr.fer.zemris.model.Triangle
+import hr.fer.zemris.geometry.model.Triangle
 import kotlin.math.roundToInt
 
 object BarycentricCoordinatesCalculator {

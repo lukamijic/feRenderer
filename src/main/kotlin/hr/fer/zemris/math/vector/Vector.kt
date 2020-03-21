@@ -3,13 +3,16 @@ package hr.fer.zemris.math.vector
 import hr.fer.zemris.math.exceptions.CrossProductIncompatibilityException
 import hr.fer.zemris.math.exceptions.IncompatibleVectorsException
 import hr.fer.zemris.math.exceptions.VectorsCannotHaveZeroDimension
+import hr.fer.zemris.math.matrix.Matrix
+import hr.fer.zemris.math.util.matrix
+import hr.fer.zemris.math.util.row
 import java.lang.IndexOutOfBoundsException
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 private const val CROSS_PRODUCT_DIMENSION = 3
 
-data class Vector(
+open class Vector(
     private val values: FloatArray
 ) {
 
@@ -83,6 +86,15 @@ data class Vector(
 
     fun normalize() = this * (1.0f / norm)
 
+    fun toMatrix(toMatrix: ToMatrix) =
+        when(toMatrix) {
+            ToMatrix.ROW -> matrix(row(*values))
+            ToMatrix.COLUMN ->
+                Matrix(
+                    Array(dimension) { i -> floatArrayOf(values[i])}
+                )
+        }
+
     private fun norm() =
         sqrt(
             values
@@ -98,5 +110,9 @@ data class Vector(
 
     override fun hashCode(): Int {
         return super.hashCode()
+    }
+
+    enum class ToMatrix {
+        COLUMN, ROW
     }
 }

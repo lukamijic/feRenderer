@@ -2,7 +2,10 @@ package hr.fer.zemris.math.matrix
 
 import hr.fer.zemris.math.exceptions.MatricesAreNotCompatibleForMultiplicationException
 import hr.fer.zemris.math.exceptions.MatricesAreNotTheSameDimensionException
+import hr.fer.zemris.math.exceptions.MatrixCannotBeTranformedIntoAVector
 import hr.fer.zemris.math.exceptions.MatrixCreationException
+import hr.fer.zemris.math.util.vector
+import hr.fer.zemris.math.vector.Vector
 import java.lang.StringBuilder
 
 data class Matrix(
@@ -81,6 +84,12 @@ data class Matrix(
             }
         )
 
+    fun toVector() =
+        when {
+            rows == 1 -> vector(*values[0])
+            columns == 1 -> Vector(FloatArray(columns) { i -> this[i, 0]})
+            else -> throw MatrixCannotBeTranformedIntoAVector(this)
+        }
 
     override fun equals(other: Any?): Boolean =
         when (other) {

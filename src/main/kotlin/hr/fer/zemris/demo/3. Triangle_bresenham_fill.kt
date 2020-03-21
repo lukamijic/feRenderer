@@ -4,7 +4,7 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.demo.util.randomColor
 import hr.fer.zemris.demo.util.randomPoint
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.model.Triangle
+import hr.fer.zemris.geometry.model.Triangle
 
 fun main() {
 
