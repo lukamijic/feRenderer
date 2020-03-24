@@ -6,12 +6,15 @@ import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
+import hr.fer.zemris.graphicsAlgorithms.lineclipping.LineClipping
 import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 class Canvas(
     val width: Int,
-    val height: Int
+    val height: Int,
+    var lineClipping: LineClipping = CohenSutherlandLineClippingAlgorithm(0, width - 1, 0, height - 1)
 ) {
 
     private val widthRange = 0 until width
@@ -30,12 +33,14 @@ class Canvas(
     fun drawPixel(x: Int, y: Int, color: Color) = drawPixel(x, y, color.toRGB())
 
     fun drawLine(p1: Point, p2: Point, rgb: RGB) =
-        BresenhamLineAlgorithm.bresenhamCalculateLine(p1, p2)
-            .filter(::isPointInCanvas)
-            .forEach { p ->
-                drawPixel(p.x, p.y, rgb)
+        lineClipping
+            .clip(p1, p2)?.let { (p1, p2) ->
+                BresenhamLineAlgorithm.bresenhamCalculateLine(p1, p2)
+                    .filter(::isPointInCanvas)
+                    .forEach { p ->
+                        drawPixel(p.x, p.y, rgb)
+                    }
             }
-
 
     fun drawLine(p1: Point, p2: Point, color: Color) =
         drawLine(p1, p2, color.toRGB())
