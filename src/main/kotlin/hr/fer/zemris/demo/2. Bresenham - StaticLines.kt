@@ -1,6 +1,7 @@
 package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
+import hr.fer.zemris.demo.util.LineData
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.geometry.model.Point
 
@@ -74,9 +75,3 @@ fun main() {
         display.swapBuffers()
     }
 }
-
-private data class LineData(
-    val p1: Point,
-    val p2: Point,
-    val color: Color
-)
