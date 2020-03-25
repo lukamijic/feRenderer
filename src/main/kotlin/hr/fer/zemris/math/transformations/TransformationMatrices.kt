@@ -10,7 +10,7 @@ fun translateMatrix(deltaX: Float, deltaY: Float, deltaZ: Float) =
     matrix(
         row(1, 0, 0, 0),
         row(0, 1, 0, 0),
-        row(0, 0, 0, 1),
+        row(0, 0, 1, 0),
         row(deltaX, deltaY, deltaZ, 1)
     )
 
@@ -55,7 +55,7 @@ fun scaleMatrix(scale: Float): Matrix =
         row(1, 0, 0, 0),
         row(0, 1, 0, 0),
         row(0, 0, 1, 0),
-        row(0, 0, 0, scale)
+        row(0, 0, 0, 1f / scale)
     )
 
 fun scaleMatrix(scaleX: Float, scaleY: Float, scaleZ: Float): Matrix =
