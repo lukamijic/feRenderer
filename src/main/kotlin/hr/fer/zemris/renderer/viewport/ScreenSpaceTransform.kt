@@ -18,7 +18,7 @@ class ScreenSpaceTransform(
         viewPortMatrix =
             matrix(
                 row(halfWidth, 0, 0, 0),
-                row(0, halfHeight, 0, 0),
+                row(0, -halfHeight, 0, 0),
                 row(0, 0, 1, 0),
                 row(halfWidth, halfHeight, 0, 1)
             )

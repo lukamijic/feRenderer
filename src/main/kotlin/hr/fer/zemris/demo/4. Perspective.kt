@@ -37,12 +37,12 @@ fun main() {
     while (true) {
         canvas.clear(Color.BLACK)
 
-        val cubeModelMatrix1 = scaleMatrix(10f) * rotateXMatrix(deltaRotCube1) * rotateYMatrix(deltaRotCube1) * rotateZMatrix(deltaRotCube1) * translateMatrix(0f, 0f, 150f)
-        val cubeModelMatrix2 = scaleMatrix(5f) * rotateYMatrix(deltaRotCube2) * rotateZMatrix(deltaRotCube2) * translateMatrix(0f, 0f, 150f)
-        val cubeModelMatrix3 = scaleXMatrix(5f) * scaleYMatrix(2f) * scaleMatrix(5f) * rotateYMatrix(deltaRotCube3) * translateMatrix(10f, 10f, 250f)
-        val pyramidModelMatrix1 = scaleMatrix(5f) * rotateXMatrix(deltaRotPyramid1 + 0.5f) * rotateYMatrix(deltaRotPyramid1) * translateMatrix(0f, 0f, 150f)
-        val pyramidModelMatrix2 = scaleMatrix(5f) * rotateYMatrix(deltaRotPyramid2) * translateMatrix(-10f, -10f, 150f)
-        val diamondModelMatrix = scaleYMatrix(2f) * scaleMatrix(4f) * rotateYMatrix(deltaRotDiamond) * rotateZMatrix(deltaRotDiamond) * translateMatrix(10f, -10f, 200f)
+        val cubeModelMatrix1 = scaleMatrix(9f) * rotateXMatrix(deltaRotCube1) * rotateYMatrix(deltaRotCube1) * rotateZMatrix(deltaRotCube1) * translateMatrix(15f, 0f, -150f)
+        val cubeModelMatrix2 = scaleMatrix(5f) * rotateYMatrix(deltaRotCube2) * rotateZMatrix(deltaRotCube2) * translateMatrix(5f, 1f, -150f) * rotateZMatrix(deltaRotCube2/2)
+        val cubeModelMatrix3 = scaleXMatrix(5f) * scaleYMatrix(2f) * scaleMatrix(5f) * rotateYMatrix(deltaRotCube3) * translateMatrix(-20f, 5f, -250f)
+        val pyramidModelMatrix1 = scaleMatrix(5f) * rotateXMatrix(deltaRotPyramid1 + 0.5f) * rotateYMatrix(deltaRotPyramid1) * translateMatrix(0f, 0f, -150f)
+        val pyramidModelMatrix2 = scaleMatrix(5f) * rotateYMatrix(deltaRotPyramid2) * translateMatrix(-10f, -10f, -150f) * rotateZMatrix(deltaRotPyramid2)
+        val diamondModelMatrix = scaleYMatrix(2f) * scaleMatrix(4f) * rotateYMatrix(deltaRotDiamond) * rotateZMatrix(deltaRotDiamond) * translateMatrix(20f, -12f, -200f)
 
 
         deltaRotCube1 += 0.01f
