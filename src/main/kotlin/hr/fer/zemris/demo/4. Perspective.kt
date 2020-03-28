@@ -62,7 +62,7 @@ fun main() {
     }
 }
 
-fun renderMesh(mesh: Mesh, canvas : Canvas, color: Color, modelMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
+private fun renderMesh(mesh: Mesh, canvas : Canvas, color: Color, modelMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
     for(i in mesh.vertices.indices step 3) {
         canvas.drawTriangle(
             Triangle(
@@ -75,5 +75,5 @@ fun renderMesh(mesh: Mesh, canvas : Canvas, color: Color, modelMatrix: Matrix, p
     }
 }
 
-fun vectorToPoint(v1: Vector, modelMatrix: Matrix,perspective: Matrix, viewPort: Matrix): Point =
+private fun vectorToPoint(v1: Vector, modelMatrix: Matrix, perspective: Matrix, viewPort: Matrix): Point =
     ((v1.toMatrix(Vector.ToMatrix.ROW) * modelMatrix * perspective).let { it * (1f / it[0, 3]) } * viewPort).toVector().let { Point(ceil(it[0]).toInt(), ceil(it[1]).toInt()) }
