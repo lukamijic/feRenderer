@@ -33,9 +33,9 @@ fun main() {
                     randomPoint(0..1024),
                     randomPoint(0..1024)
                 ),
-                randomColor(),
-                randomColor(),
-                randomColor()
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE
             )
         }
         with(coloredTriangle) { canvas.fillTriangle(triangle, c1, c2, c3)}

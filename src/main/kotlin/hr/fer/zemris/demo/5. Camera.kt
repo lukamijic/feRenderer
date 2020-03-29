@@ -19,7 +19,7 @@ import kotlin.math.ceil
 
 
 fun main() {
-    val display = Display(1600, 900, "Perspective")
+    val display = Display(1600, 900, "Camera")
     val canvas = display.canvas
 
     val viewPort = ScreenSpaceTransform(display.width, display.height)
@@ -31,11 +31,11 @@ fun main() {
     while (true) {
         canvas.clear(Color.BLACK)
 
-        val centerCube = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
+        val centerCubeTransform = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
 
-        val xAxisTransform = centerCube * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f)
-        val yAxisTransform = centerCube * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f)
-        val zAxisTransform = centerCube * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f)
+        val xAxisTransform = centerCubeTransform * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f)
+        val yAxisTransform = centerCubeTransform * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f)
+        val zAxisTransform = centerCubeTransform * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f)
 
         renderMesh(axisMesh, canvas, Color.WHITE, xAxisTransform, camera.cameraMatrix, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
         renderMesh(axisMesh, canvas, Color.RED, yAxisTransform, camera.cameraMatrix, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)

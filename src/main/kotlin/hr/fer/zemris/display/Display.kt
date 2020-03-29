@@ -2,6 +2,7 @@ package hr.fer.zemris.display
 
 import java.awt.Dimension
 import java.awt.Graphics
+import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferInt
 import javax.swing.JFrame

@@ -9,5 +9,8 @@ interface Camera {
     var cameraTarget: Vector
     var cameraUpVector: Vector
 
+    val forward: Vector
+    val right: Vector
+    val up: Vector
     val cameraMatrix: Matrix
 }
