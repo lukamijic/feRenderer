@@ -6,8 +6,10 @@ import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.draw.TrianglePointsProcessor
 import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
 import hr.fer.zemris.graphicsAlgorithms.lineclipping.LineClipping
+import hr.fer.zemris.graphicsAlgorithms.util.BoundingBox
 import java.lang.IndexOutOfBoundsException
 import java.util.*
 
@@ -19,6 +21,7 @@ class Canvas(
 
     private val widthRange = 0 until width
     private val heightRange = 0 until height
+    private val boundingBox = BoundingBox(0, width - 1, 0, height - 1)
     private val rgbComponents = Array(width * height) { RGB.BLACK }
 
     fun drawPixel(x: Int, y: Int, rgb: RGB) {
@@ -71,6 +74,11 @@ class Canvas(
     fun fillTriangle(triangle: Triangle, c1: Color, c2: Color, c3: Color) =
         fillTriangle(triangle, c1.toRGB(), c2.toRGB(), c3.toRGB())
 
+    fun fillTriangle(triangle: Triangle, colorGetterForPixel: (Int, Int) -> RGB) {
+        TrianglePointsProcessor(triangle, boundingBox)
+            .processPoints { x, y -> drawPixel(x, y, colorGetterForPixel(x, y)) }
+    }
+
     fun clear(rgb: RGB) = Arrays.fill(rgbComponents, rgb)
 
     fun clear(color: Color) = Arrays.fill(rgbComponents, color.toRGB())
@@ -81,42 +89,6 @@ class Canvas(
         }
     }
 
-    private fun fillTriangle(triangle: Triangle, colorGetterForPixel: (Int, Int) -> RGB) {
-        val (p1, p2, p3) = triangle
-        val lowestXForY = mutableMapOf<Int, Int>()
-        val highestXForY = mutableMapOf<Int, Int>()
-
-        listOf(
-            BresenhamLineAlgorithm.bresenhamCalculateLine(p1, p2),
-            BresenhamLineAlgorithm.bresenhamCalculateLine(p1, p3),
-            BresenhamLineAlgorithm.bresenhamCalculateLine(p2, p3)
-        ).forEach { points ->
-            points.forEach { p ->
-                lowestXForY.computeIfAbsent(p.y) { p.x }
-                highestXForY.computeIfAbsent(p.y) { p.x }
-
-                lowestXForY.computeIfPresent(p.y) { _: Int, value: Int -> if (p.x < value) p.x else value}
-                highestXForY.computeIfPresent(p.y) { _: Int, value: Int -> if (p.x > value) p.x else value}
-            }
-        }
-
-        lowestXForY.forEach { (y: Int, x: Int) ->
-            scanLine(x, highestXForY[y]!!, y) { i, j -> colorGetterForPixel(i, j)}
-        }
-    }
-
     private fun isPointInCanvas(p: Point) =
         p.x in 0 until width && p.y in 0 until height
-
-    /**
-     * This methods works correctly if startX is before endX
-     */
-    private fun scanLine(startX: Int, endX: Int, y: Int, colorGetter: (Int, Int) -> RGB) {
-        if ((y in 0 until height).not()) return
-        val xs = if(startX < 0) 0 else startX
-        val xe = if(endX >= width) width - 1 else endX
-
-        (xs..xe).forEach { x -> drawPixel(x, y, colorGetter(x, y)) }
-    }
-
 }

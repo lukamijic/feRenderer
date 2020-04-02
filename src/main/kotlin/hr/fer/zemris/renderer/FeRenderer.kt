@@ -8,10 +8,12 @@ import hr.fer.zemris.math.matrix.Matrix
 import hr.fer.zemris.math.vector.Vector
 import hr.fer.zemris.renderer.camera.Camera
 import hr.fer.zemris.renderer.exceptions.InvalidNumberOfVertices
+import hr.fer.zemris.renderer.exceptions.MeshMustHaveTexelsInformation
 import hr.fer.zemris.renderer.input.KeyEventStorage
 import hr.fer.zemris.renderer.input.KeyListenerAdapter
 import hr.fer.zemris.renderer.projection.Projection
 import hr.fer.zemris.renderer.viewport.ViewPort
+import hr.fer.zemris.resources.bitmap.Bitmap
 import hr.fer.zemris.resources.mesh.Mesh
 import java.awt.event.KeyEvent
 import kotlin.math.ceil
@@ -40,7 +42,7 @@ class FeRenderer(
     }
 
     fun renderMesh(mesh: Mesh, modelTransformMatrix: Matrix, color: Color) =
-        mesh.vertices.asSequence()
+        mesh.vertices
             .map { vector -> vector.toMatrix(Vector.ToMatrix.ROW) }
             .map { it * modelTransformMatrix * camera.cameraMatrix * projection.projectionMatrix }
             .map { it * (1f / it[0, 3]) }

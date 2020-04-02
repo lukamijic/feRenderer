@@ -23,4 +23,24 @@ private val cubeVertices = listOf(
     vector(1, 0, 1, 1), vector(0, 0, 0, 1), vector(1, 0, 0, 1)
 )
 
-class CubeMesh: Mesh(cubeVertices)
+private val cubeTexels = listOf(
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1),
+
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1),
+
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1),
+
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1),
+
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1),
+
+    vector(0, 1, 1), vector(0, 0, 1), vector(1, 0, 1),
+    vector(0, 1, 1), vector(1, 0, 1), vector(1, 1, 1)
+)
+
+class CubeMesh: Mesh(cubeVertices, cubeTexels)
