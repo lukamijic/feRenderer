@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent
 
 fun main() {
     val renderer = FeRenderer(
-        Display(1600, 900, "Camera"),
+        Display(1600, 900, "Object Loading"),
         CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200f)),
         FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
         ScreenSpaceTransform(1600, 900)
@@ -47,6 +47,9 @@ fun main() {
     val teddyMesh = SimpleObjLoader.load("src/main/resources/obj/teddy.obj")
 
     var deltaRot = 0f
+
+    var fpsCounter = 0
+    var time = System.currentTimeMillis()
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
@@ -56,6 +59,13 @@ fun main() {
 
         renderer.renderMesh(teddyMesh, teddyTransform, Color.WHITE)
         renderer.swapBuffers()
+
+        fpsCounter++
+        if (System.currentTimeMillis() - time > 1000) {
+            time = System.currentTimeMillis()
+            println(fpsCounter)
+            fpsCounter = 0
+        }
     }
 
 }

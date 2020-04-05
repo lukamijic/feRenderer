@@ -2,8 +2,7 @@ package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.math.transformations.scaleMatrix
-import hr.fer.zemris.math.transformations.translateMatrix
+import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
@@ -14,8 +13,8 @@ import java.awt.event.KeyEvent
 
 fun main() {
     val renderer = FeRenderer(
-        Display(1600, 900, "Renderer"),
-        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200)),
+        Display(1600, 900, "Camera"),
+        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -50f)),
         FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
         ScreenSpaceTransform(1600, 900)
     ).apply {
@@ -43,22 +42,18 @@ fun main() {
         }
     }
 
-    val axisMesh = SimpleObjLoader.load("src/main/resources/obj/simplecube.obj")
+    val cubeMesh = SimpleObjLoader.load("src/main/resources/obj/simplecube.obj")
+
+    var deltaRot = 0f
 
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        val centerCubeTransform = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
+        val cubeTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(0f, 0f, -50f)
+        deltaRot += 0.01f
 
-        val xAxisTransform = centerCubeTransform * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f)
-        val yAxisTransform = centerCubeTransform * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f)
-        val zAxisTransform = centerCubeTransform * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f)
-
-        renderer.renderMesh(axisMesh, xAxisTransform, Color.WHITE)
-        renderer.renderMesh(axisMesh, yAxisTransform, Color.GREEN)
-        renderer.renderMesh(axisMesh, zAxisTransform, Color.YELLOW)
-
+        renderer.renderMesh(cubeMesh, cubeTransform, Color.RED)
         renderer.swapBuffers()
     }
 

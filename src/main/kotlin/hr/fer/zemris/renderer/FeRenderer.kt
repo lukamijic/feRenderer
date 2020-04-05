@@ -4,16 +4,16 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.NormalCalculator
+import hr.fer.zemris.graphicsAlgorithms.culling.Culling
+import hr.fer.zemris.graphicsAlgorithms.util.removeHomogeneousCoordinate
 import hr.fer.zemris.math.matrix.Matrix
 import hr.fer.zemris.math.vector.Vector
 import hr.fer.zemris.renderer.camera.Camera
-import hr.fer.zemris.renderer.exceptions.InvalidNumberOfVertices
-import hr.fer.zemris.renderer.exceptions.MeshMustHaveTexelsInformation
 import hr.fer.zemris.renderer.input.KeyEventStorage
 import hr.fer.zemris.renderer.input.KeyListenerAdapter
 import hr.fer.zemris.renderer.projection.Projection
 import hr.fer.zemris.renderer.viewport.ViewPort
-import hr.fer.zemris.resources.bitmap.Bitmap
 import hr.fer.zemris.resources.mesh.Mesh
 import java.awt.event.KeyEvent
 import kotlin.math.ceil
@@ -41,19 +41,28 @@ class FeRenderer(
         )
     }
 
-    fun renderMesh(mesh: Mesh, modelTransformMatrix: Matrix, color: Color) =
-        mesh.vertices
-            .map { vector -> vector.toMatrix(Vector.ToMatrix.ROW) }
-            .map { it * modelTransformMatrix * camera.cameraMatrix * projection.projectionMatrix }
+    fun renderMesh(mesh: Mesh, modelTransformMatrix: Matrix, color: Color) {
+        val transformed = mesh.vertices.values
+            .map { vector -> vector.toMatrix(Vector.ToMatrix.ROW) * modelTransformMatrix }
+        val points = transformed.asSequence()
+            .map { it * camera.cameraMatrix * projection.projectionMatrix }
             .map { it * (1f / it[0, 3]) }
             .map { it * viewPort.viewPortMatrix }
             .map { Point(ceil(it[0, 0]).toInt(), ceil(it[0, 1]).toInt()) }
-            .chunked(3) {
-                if (it.size != 3) throw InvalidNumberOfVertices("Number of vertices must be dividable by 3 to form a triangle, number of vertices was ${mesh.vertices.size}")
+            .toList()
 
-                Triangle(it[0], it[1], it[2])
+        mesh.vertices.indices.chunked(3) {
+            val v1 = transformed[it[0]].toVector().removeHomogeneousCoordinate()
+            val v2 = transformed[it[1]].toVector().removeHomogeneousCoordinate()
+            val v3 = transformed[it[2]].toVector().removeHomogeneousCoordinate()
+            val triangleCenter = (v1 + v2 + v3) * (1f / 3f)
+            val normal = NormalCalculator.calculate(v1, v2, v3)
+
+            if (Culling.cull(normal, camera.cameraPosition - triangleCenter)) {
+                display.canvas.drawTriangle(Triangle(points[it[0]], points[it[1]], points[it[2]]), color)
             }
-            .forEach { display.canvas.drawTriangle(it, color) }
+        }
+    }
 
     fun processKeyEvents() {
         keyEventProcessor?.let {
