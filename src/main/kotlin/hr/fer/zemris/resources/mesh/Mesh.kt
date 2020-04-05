@@ -5,5 +5,6 @@ import hr.fer.zemris.util.IndexedList
 
 open class Mesh(
     val vertices: IndexedList<Vector>,
+    val texels: IndexedList<Vector>?,
     val normals: IndexedList<Vector>?
 )

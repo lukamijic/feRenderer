@@ -9,7 +9,7 @@ import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.loader.SimpleObjLoader
+import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
 fun main() {
@@ -43,7 +43,7 @@ fun main() {
         }
     }
 
-    val axisMesh = SimpleObjLoader.load("src/main/resources/obj/simplecube.obj")
+    val axisMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
 
     while (true) {
         renderer.clearDisplay()

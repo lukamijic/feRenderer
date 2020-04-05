@@ -8,7 +8,7 @@ import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.loader.SimpleObjLoader
+import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
 fun main() {
@@ -42,7 +42,7 @@ fun main() {
         }
     }
 
-    val cubeMesh = SimpleObjLoader.load("src/main/resources/obj/simplecube.obj")
+    val cubeMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
 
     var deltaRot = 0f
 
