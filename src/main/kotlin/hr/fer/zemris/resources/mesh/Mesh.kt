@@ -1,8 +1,9 @@
 package hr.fer.zemris.resources.mesh
 
 import hr.fer.zemris.math.vector.Vector
+import hr.fer.zemris.util.IndexedList
 
 open class Mesh(
-    val vertices: List<Vector>,
-    val texels: List<Vector>? = null
+    val vertices: IndexedList<Vector>,
+    val normals: IndexedList<Vector>?
 )

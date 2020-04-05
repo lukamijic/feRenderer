@@ -27,6 +27,6 @@ object SimpleObjLoader {
                 }
         }
 
-        return Mesh(IndexedList(vertices, indices))
+        return Mesh(IndexedList(vertices, indices), null)
     }
 }

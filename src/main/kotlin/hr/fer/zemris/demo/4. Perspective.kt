@@ -1,6 +1,9 @@
 package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
+import hr.fer.zemris.demo.util.cubeVertices
+import hr.fer.zemris.demo.util.diamondVertices
+import hr.fer.zemris.demo.util.pyramidVertices
 import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.geometry.model.Point
@@ -10,10 +13,6 @@ import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.vector.Vector
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.mesh.Mesh
-import hr.fer.zemris.resources.mesh.meshes.CubeMesh
-import hr.fer.zemris.resources.mesh.meshes.DiamondMesh
-import hr.fer.zemris.resources.mesh.meshes.PyramidMesh
 import kotlin.math.ceil
 
 
@@ -24,9 +23,9 @@ fun main() {
     val viewPort = ScreenSpaceTransform(display.width, display.height)
     val fovPerspectiveProjection = FovPerspectiveProjection(Math.toRadians(12.0).toFloat(), display.width.toFloat() / display.height.toFloat(), 0.1f, 500f)
 
-    val cube = CubeMesh()
-    val pyramidMesh = PyramidMesh()
-    val diamondMesh = DiamondMesh()
+    val cubeMesh = cubeVertices
+    val pyramidMesh = pyramidVertices
+    val diamondMesh = diamondVertices
 
     var deltaRotCube1 = 0.02f
     var deltaRotCube2 = 1f
@@ -52,9 +51,9 @@ fun main() {
         deltaRotPyramid2 += 0.02f
         deltaRotDiamond += 0.05f
 
-        renderMesh(cube, canvas, Color.MAGENTA, cubeModelMatrix1, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
-        renderMesh(cube, canvas, Color.WHITE, cubeModelMatrix2, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
-        renderMesh(cube, canvas, Color.GREEN, cubeModelMatrix3, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
+        renderMesh(cubeMesh, canvas, Color.MAGENTA, cubeModelMatrix1, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
+        renderMesh(cubeMesh, canvas, Color.WHITE, cubeModelMatrix2, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
+        renderMesh(cubeMesh, canvas, Color.GREEN, cubeModelMatrix3, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
         renderMesh(pyramidMesh, canvas, Color.RED, pyramidModelMatrix1, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
         renderMesh(pyramidMesh, canvas, Color.YELLOW, pyramidModelMatrix2, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
         renderMesh(diamondMesh, canvas, Color.CYAN, diamondModelMatrix, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
@@ -62,13 +61,13 @@ fun main() {
     }
 }
 
-private fun renderMesh(mesh: Mesh, canvas : Canvas, color: Color, modelMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
-    for(i in mesh.vertices.indices step 3) {
+private fun renderMesh(vertices: List<Vector>, canvas : Canvas, color: Color, modelMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
+    vertices.chunked(3) {
         canvas.drawTriangle(
             Triangle(
-                vectorToPoint(mesh.vertices[i], modelMatrix, perspective, viewPort),
-                vectorToPoint(mesh.vertices[i + 1], modelMatrix, perspective, viewPort),
-                vectorToPoint(mesh.vertices[i + 2], modelMatrix, perspective, viewPort)
+                vectorToPoint(it[0], modelMatrix, perspective, viewPort),
+                vectorToPoint(it[1], modelMatrix, perspective, viewPort),
+                vectorToPoint(it[2], modelMatrix, perspective, viewPort)
             ),
             color
         )

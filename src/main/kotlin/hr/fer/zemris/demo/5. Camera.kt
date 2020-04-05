@@ -1,6 +1,7 @@
 package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
+import hr.fer.zemris.demo.util.cubeVertices
 import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.geometry.model.Point
@@ -13,8 +14,6 @@ import hr.fer.zemris.math.vector.Vector
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.mesh.Mesh
-import hr.fer.zemris.resources.mesh.meshes.CubeMesh
 import kotlin.math.ceil
 
 
@@ -26,7 +25,7 @@ fun main() {
     val fovPerspectiveProjection = FovPerspectiveProjection(Math.toRadians(12.0).toFloat(), display.width.toFloat() / display.height.toFloat(), 0.1f, 500f)
     val camera = CameraImpl(position = vector(50, 50, 20), target = vector(0, 0, -200))
 
-    val axisMesh = CubeMesh()
+    val axisMesh = cubeVertices
 
     while (true) {
         canvas.clear(Color.BLACK)
@@ -45,13 +44,13 @@ fun main() {
     }
 }
 
-private fun renderMesh(mesh: Mesh, canvas : Canvas, color: Color, modelMatrix: Matrix, cameraMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
-    for(i in mesh.vertices.indices step 3) {
+private fun renderMesh(vertices: List<Vector>, canvas : Canvas, color: Color, modelMatrix: Matrix, cameraMatrix: Matrix, perspective: Matrix, viewPort: Matrix) {
+    vertices.chunked(3) {
         canvas.drawTriangle(
             Triangle(
-                vectorToPoint(mesh.vertices[i], modelMatrix, cameraMatrix, perspective, viewPort),
-                vectorToPoint(mesh.vertices[i + 1], modelMatrix, cameraMatrix, perspective, viewPort),
-                vectorToPoint(mesh.vertices[i + 2], modelMatrix, cameraMatrix, perspective, viewPort)
+                vectorToPoint(it[0], modelMatrix, cameraMatrix, perspective, viewPort),
+                vectorToPoint(it[1], modelMatrix, cameraMatrix, perspective, viewPort),
+                vectorToPoint(it[2], modelMatrix, cameraMatrix, perspective, viewPort)
             ),
             color
         )
