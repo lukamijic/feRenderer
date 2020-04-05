@@ -10,7 +10,7 @@ import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.loader.SimpleObjLoader
+import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
 fun main() {
@@ -44,7 +44,7 @@ fun main() {
         }
     }
 
-    val teddyMesh = SimpleObjLoader.load("src/main/resources/obj/teddy.obj")
+    val teddyMesh = ObjLoader.load("src/main/resources/obj/teddy.obj")
 
     var deltaRot = 0f
 
