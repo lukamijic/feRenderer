@@ -42,7 +42,6 @@ object ObjLoader {
                 .filter { !it.startsWith(COMMENT_SIGN) }
                 .forEach {
                     when {
-                        it.startsWith(VERTEX_SIGN) -> vertices.add(parseVertex(it.substring(VERTEX_SIGN.length).trim()))
                         it.startsWith(TEXTURE_SIGN) -> texels.add(parseTexture(it.substring(TEXTURE_SIGN.length).trim()))
                         it.startsWith(NORMAL_SIGN) -> normals.add(parseNormal(it.substring(NORMAL_SIGN.length).trim()))
                         it.startsWith(POLYGON_SIGN) -> parsePolygon(it.substring(POLYGON_SIGN.length).trim()).let { indices ->
@@ -50,7 +49,8 @@ object ObjLoader {
                             indices.texelIndices?.let { texelIndicesToAdd -> texelsIndices.addAll(texelIndicesToAdd) }
                             indices.normalIndices?.let { normalIndicesToAdd -> normalIndices.addAll(normalIndicesToAdd) }
                         }
-                        else -> UnsupportedFormatMode("SimpleObjLoader supports only vertex loading and polygon indices loading")
+                        it.startsWith(VERTEX_SIGN) -> vertices.add(parseVertex(it.substring(VERTEX_SIGN.length).trim()))
+                        else -> UnsupportedFormatMode("Invalid line $it")
                     }
                 }
         }
