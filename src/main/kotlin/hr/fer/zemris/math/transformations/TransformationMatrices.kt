@@ -6,6 +6,14 @@ import hr.fer.zemris.math.util.row
 import kotlin.math.cos
 import kotlin.math.sin
 
+private val identityMatrixTransform =
+    matrix(
+        row(1, 0, 0, 0),
+        row(0, 1, 0, 0),
+        row(0, 0, 1, 0),
+        row(0, 0, 0, 1)
+    )
+
 fun translateMatrix(deltaX: Float, deltaY: Float, deltaZ: Float) =
     matrix(
         row(1, 0, 0, 0),
@@ -71,3 +79,5 @@ fun scaleXMatrix(scale: Float): Matrix = scaleMatrix(scale, 1f, 1f)
 fun scaleYMatrix(scale: Float): Matrix = scaleMatrix(1f, scale, 1f)
 
 fun scaleZMatrix(scale: Float): Matrix = scaleMatrix(1f, 1f, scale)
+
+fun identityMatrix(): Matrix = identityMatrixTransform

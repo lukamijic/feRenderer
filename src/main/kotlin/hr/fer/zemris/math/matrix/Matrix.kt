@@ -6,7 +6,11 @@ import hr.fer.zemris.math.exceptions.MatrixCannotBeTranformedIntoAVector
 import hr.fer.zemris.math.exceptions.MatrixCreationException
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.math.vector.Vector
+import org.la4j.matrix.Matrices
+import org.la4j.matrix.dense.Basic2DMatrix
 import java.lang.StringBuilder
+
+typealias La4jMatrix = org.la4j.matrix.Matrix
 
 data class Matrix(
     private val values: Array<FloatArray>
@@ -84,10 +88,19 @@ data class Matrix(
             }
         )
 
+    fun inverse(): Matrix {
+        val la4jMatrix: La4jMatrix =
+            Basic2DMatrix((Array(rows) { i -> DoubleArray(columns) { j -> values[i][j].toDouble() } })).inverse(Matrices.DEFAULT_INVERTOR)
+
+        return Matrix(
+            Array(rows) {i -> FloatArray(columns) {j -> la4jMatrix.get(i, j).toFloat()} }
+        )
+    }
+
     fun toVector() =
         when {
             rows == 1 -> vector(*values[0])
-            columns == 1 -> Vector(FloatArray(columns) { i -> this[i, 0]})
+            columns == 1 -> Vector(FloatArray(columns) { i -> this[i, 0] })
             else -> throw MatrixCannotBeTranformedIntoAVector(this)
         }
 
