@@ -5,6 +5,8 @@ import hr.fer.zemris.display.Display
 import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
+import hr.fer.zemris.renderer.RenderObject
+import hr.fer.zemris.renderer.RenderType
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
@@ -43,17 +45,23 @@ fun main() {
     }
 
     val cubeMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
+    val cubeNormalsMesh = ObjLoader.load("src/main/resources/obj/normalscube.obj")
 
     var deltaRot = 0f
+
+    val cubeObject = RenderObject(cubeMesh, identityMatrix(), true, Color.RED, RenderType.DRAW)
+    val cubeNormalsObject = RenderObject(cubeNormalsMesh, identityMatrix(), true, Color.GREEN, RenderType.DRAW)
 
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        val cubeTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(0f, 0f, -50f)
+        cubeObject.modelViewTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(0f, 0f, -50f)
+        cubeNormalsObject.modelViewTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(10f, 0f, -50f)
         deltaRot += 0.01f
 
-        renderer.renderMesh(cubeMesh, cubeTransform, Color.RED)
+        renderer.render(cubeNormalsObject)
+        renderer.render(cubeObject)
         renderer.swapBuffers()
     }
 

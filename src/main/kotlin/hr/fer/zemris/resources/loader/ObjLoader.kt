@@ -84,7 +84,7 @@ object ObjLoader {
     private fun parseNormal(line: String) : Vector {
         val normalValues = line.split(WHITESPACE_REGEX).map(String::toFloat)
         return when(normalValues.size) {
-            3 -> vector(normalValues[0], normalValues[1], normalValues[3])
+            3 -> vector(normalValues[0], normalValues[1], normalValues[2])
             else -> throw InvalidLoadingFormat("Normals must have 3 values, it had $line -> ${normalValues.size}")
         }
     }

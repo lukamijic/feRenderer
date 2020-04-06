@@ -3,6 +3,7 @@ package hr.fer.zemris.demo
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.math.transformations.identityMatrix
+import hr.fer.zemris.math.transformations.rotateYMatrix
 import hr.fer.zemris.math.transformations.scaleMatrix
 import hr.fer.zemris.math.transformations.translateMatrix
 import hr.fer.zemris.math.util.vector
@@ -17,8 +18,8 @@ import java.awt.event.KeyEvent
 
 fun main() {
     val renderer = FeRenderer(
-        Display(1600, 900, "Renderer"),
-        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200)),
+        Display(1600, 900, "Object Loading"),
+        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200f)),
         FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
         ScreenSpaceTransform(1600, 900)
     ).apply {
@@ -46,43 +47,35 @@ fun main() {
         }
     }
 
-    val axisMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
-
-    val centerCubeTransform = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
-
-    val xAxisObject = RenderObject(
-        axisMesh,
-        centerCubeTransform * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f),
-        true,
-        Color.GREEN,
-        RenderType.DRAW
-    )
-
-    val yAxisObject = RenderObject(
-        axisMesh,
-        centerCubeTransform * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f),
+    val teddy = RenderObject(
+        ObjLoader.load("src/main/resources/obj/teddy.obj"),
+        identityMatrix(),
         true,
         Color.WHITE,
         RenderType.DRAW
     )
 
-    val zAxisObject = RenderObject(
-        axisMesh,
-        centerCubeTransform * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f),
-        true,
-        Color.YELLOW,
-        RenderType.DRAW
-    )
+    var deltaRot = 0f
 
+    var fpsCounter = 0
+    var time = System.currentTimeMillis()
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        renderer.render(xAxisObject)
-        renderer.render(yAxisObject)
-        renderer.render(zAxisObject)
+        teddy.modelViewTransform = scaleMatrix(5f) * rotateYMatrix(deltaRot) * translateMatrix(0f, 0f, -200f)
+        deltaRot += 0.05f
+
+        renderer.render(teddy)
 
         renderer.swapBuffers()
+
+        fpsCounter++
+        if (System.currentTimeMillis() - time > 1000) {
+            time = System.currentTimeMillis()
+            println(fpsCounter)
+            fpsCounter = 0
+        }
     }
 
 }
