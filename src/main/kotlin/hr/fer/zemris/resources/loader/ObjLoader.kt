@@ -21,7 +21,7 @@ private const val POLYGON_SIGN = "f"
 private val VERTEX_VALUES_REGEX = "[0-9]+\\s+[0-9]+\\s+[0-9]+".toRegex()
 private val VERTEX_AND_TEXTURE_VALUES_REGEX = "[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+".toRegex()
 private val VERTEX_AND_NORMAL_VALUES_REGEX = "[0-9]+//[0-9]+\\s+[0-9]+//[0-9]+\\s+[0-9]+//[0-9]+".toRegex()
-private val VERTEX_AND_TEXTURE_AND_NORMAL_VALUES_REGEX = "[0-9]+/[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+/[0-9]".toRegex()
+private val VERTEX_AND_TEXTURE_AND_NORMAL_VALUES_REGEX = "[0-9]+/[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+/[0-9]+\\s+[0-9]+/[0-9]+/[0-9]+".toRegex()
 
 private val INDEX_REGEX = "\\d+".toRegex()
 
