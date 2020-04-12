@@ -8,17 +8,17 @@ import kotlin.math.tan
 
 class FovPerspectiveProjection(
     fov: Radians,
-    aspectRatio: Float,
-    zNear: Float,
-    zFar: Float
+    aspectRatio: Double,
+    zNear: Double,
+    zFar: Double
 ) : Projection {
 
     override val projectionMatrix: Matrix
 
     init {
-        val cotanHalfFov = 1f / tan(fov * 0.5f)
+        val cotanHalfFov = 1 / tan(fov * 0.5)
         val zRange = zFar - zNear
-        val oneOverAspectRatio = 1f / aspectRatio
+        val oneOverAspectRatio = 1.0 / aspectRatio
         projectionMatrix = matrix(
             row(cotanHalfFov * oneOverAspectRatio, 0, 0, 0),
             row(0, cotanHalfFov, 0, 0),

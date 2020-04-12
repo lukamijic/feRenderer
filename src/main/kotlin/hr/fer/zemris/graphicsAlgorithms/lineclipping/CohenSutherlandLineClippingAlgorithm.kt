@@ -41,19 +41,19 @@ class CohenSutherlandLineClippingAlgorithm(
 
             when {
                 codeToCheck and TOP != INSIDE -> {
-                    x = calculateX(p1.x.toFloat(), p2.x.toFloat(),p1.y.toFloat(), p2.y.toFloat(), yMax.toFloat())
+                    x = calculateX(p1.x.toDouble(), p2.x.toDouble(),p1.y.toDouble(), p2.y.toDouble(), yMax.toDouble())
                     y = yMax
                 }
                 codeToCheck and BOTTOM != INSIDE -> {
-                    x = calculateX(p1.x.toFloat(), p2.x.toFloat(), p1.y.toFloat(), p2.y.toFloat(), yMin.toFloat())
+                    x = calculateX(p1.x.toDouble(), p2.x.toDouble(), p1.y.toDouble(), p2.y.toDouble(), yMin.toDouble())
                     y = yMin
                 }
                 codeToCheck and RIGHT != INSIDE -> {
-                    y = calculateY(p1.x.toFloat(), p2.x.toFloat(), p1.y.toFloat(), p2.y.toFloat(), xMax.toFloat())
+                    y = calculateY(p1.x.toDouble(), p2.x.toDouble(), p1.y.toDouble(), p2.y.toDouble(), xMax.toDouble())
                     x = xMax
                 }
                 codeToCheck and LEFT != INSIDE -> {
-                    y = calculateY(p1.x.toFloat(), p2.x.toFloat(), p1.y.toFloat(), p2.y.toFloat(), xMin.toFloat())
+                    y = calculateY(p1.x.toDouble(), p2.x.toDouble(), p1.y.toDouble(), p2.y.toDouble(), xMin.toDouble())
                     x = xMin
                 }
             }
@@ -79,9 +79,9 @@ class CohenSutherlandLineClippingAlgorithm(
         return code
     }
 
-    private fun calculateX(x1: Float, x2: Float, y1: Float, y2: Float, y: Float): Int =
+    private fun calculateX(x1: Double, x2: Double, y1: Double, y2: Double, y: Double): Int =
         (x1 + (x2 - x1) * (y - y1) / (y2 - y1)).toInt()
 
-    private fun calculateY(x1: Float, x2: Float, y1: Float, y2: Float, x: Float): Int =
+    private fun calculateY(x1: Double, x2: Double, y1: Double, y2: Double, x: Double): Int =
         (y1 + (y2 - y1) * (x - x1) / (x2 - x1)).toInt()
 }

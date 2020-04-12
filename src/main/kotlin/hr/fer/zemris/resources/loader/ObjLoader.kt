@@ -63,16 +63,16 @@ object ObjLoader {
     }
 
     private fun parseVertex(line: String): Vector {
-        val vertexValues = line.split(WHITESPACE_REGEX).map(String::toFloat)
+        val vertexValues = line.split(WHITESPACE_REGEX).map(String::toDouble)
         return when (vertexValues.size) {
-            3 -> vector(vertexValues[0], vertexValues[1], vertexValues[2], 1f)
+            3 -> vector(vertexValues[0], vertexValues[1], vertexValues[2], 1)
             4 -> vector(vertexValues[0], vertexValues[1], vertexValues[2], vertexValues[3])
             else -> throw InvalidLoadingFormat("Vertex line must have 3 or 4 values, it had $line -> ${vertexValues.size}")
         }
     }
 
     private fun parseTexture(line: String) : Vector {
-        val textureValues = line.split(WHITESPACE_REGEX).map(String::toFloat)
+        val textureValues = line.split(WHITESPACE_REGEX).map(String::toDouble)
         return when (textureValues.size) {
             1 -> vector(textureValues[0], 0, 0)
             2 -> vector(textureValues[0], textureValues[1], 0)
@@ -82,7 +82,7 @@ object ObjLoader {
     }
 
     private fun parseNormal(line: String) : Vector {
-        val normalValues = line.split(WHITESPACE_REGEX).map(String::toFloat)
+        val normalValues = line.split(WHITESPACE_REGEX).map(String::toDouble)
         return when(normalValues.size) {
             3 -> vector(normalValues[0], normalValues[1], normalValues[2])
             else -> throw InvalidLoadingFormat("Normals must have 3 values, it had $line -> ${normalValues.size}")

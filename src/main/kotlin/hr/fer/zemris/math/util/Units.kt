@@ -1,3 +1,3 @@
 package hr.fer.zemris.math.util
 
-typealias Radians = Float
+typealias Radians = Double

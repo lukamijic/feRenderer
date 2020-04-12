@@ -19,8 +19,8 @@ import java.awt.event.KeyEvent
 fun main() {
     val renderer = FeRenderer(
         Display(1600, 900, "Object Loading"),
-        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200f)),
-        FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
+        CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200)),
+        FovPerspectiveProjection(Math.toRadians(45.0), 16.0/9.0, 0.1, 500.0),
         ScreenSpaceTransform(1600, 900)
     ).apply {
         keyEventProcessor = { keyEvent ->
@@ -55,7 +55,7 @@ fun main() {
         RenderType.DRAW
     )
 
-    var deltaRot = 0f
+    var deltaRot = 0.0
 
     var fpsCounter = 0
     var time = System.currentTimeMillis()
@@ -63,8 +63,8 @@ fun main() {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        teddy.modelViewTransform = scaleMatrix(5f) * rotateYMatrix(deltaRot) * translateMatrix(0f, 0f, -200f)
-        deltaRot += 0.05f
+        teddy.modelViewTransform = scaleMatrix(5.0) * rotateYMatrix(deltaRot) * translateMatrix(0.0, 0.0, -200.0)
+        deltaRot += 0.05
 
         renderer.render(teddy)
 

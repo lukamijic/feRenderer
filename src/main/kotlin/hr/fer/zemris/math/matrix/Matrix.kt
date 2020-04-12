@@ -13,13 +13,13 @@ import java.lang.StringBuilder
 typealias La4jMatrix = org.la4j.matrix.Matrix
 
 data class Matrix(
-    private val values: Array<FloatArray>
+    private val values: Array<DoubleArray>
 ) {
 
     init {
         if (values.isEmpty()) throw MatrixCreationException("Number of rows can't be 0")
 
-        val areRowsSameSize = values.asSequence().map(FloatArray::lastIndex).distinct().count() == 1
+        val areRowsSameSize = values.asSequence().map(DoubleArray::lastIndex).distinct().count() == 1
         if (!areRowsSameSize) throw MatrixCreationException("All rows must be equal size")
 
         if (values.first().isEmpty()) throw MatrixCreationException("Rows must have more than 0 value")
@@ -41,7 +41,7 @@ data class Matrix(
             throw MatricesAreNotTheSameDimensionException(this, other)
         } else {
             Matrix(
-                Array(rows) { i -> FloatArray(columns) { j -> this[i, j] + other[i, j] } }
+                Array(rows) { i -> DoubleArray(columns) { j -> this[i, j] + other[i, j] } }
             )
         }
 
@@ -50,13 +50,13 @@ data class Matrix(
             throw MatricesAreNotTheSameDimensionException(this, other)
         } else {
             Matrix(
-                Array(rows) { i -> FloatArray(columns) { j -> this[i, j] - other[i, j] } }
+                Array(rows) { i -> DoubleArray(columns) { j -> this[i, j] - other[i, j] } }
             )
         }
 
-    operator fun times(factor: Float) =
+    operator fun times(factor: Double) =
         Matrix(
-            Array(rows) { i -> FloatArray(columns) { j -> factor * this[i, j] } }
+            Array(rows) { i -> DoubleArray(columns) { j -> factor * this[i, j] } }
         )
 
     operator fun times(other: Matrix) =
@@ -66,7 +66,7 @@ data class Matrix(
             val sharedDim = columns
             Matrix(
                 Array(rows) { i ->
-                    FloatArray(other.columns) { j ->
+                    DoubleArray(other.columns) { j ->
                         calculateMultiplicationCell(
                             i,
                             j,
@@ -82,7 +82,7 @@ data class Matrix(
     fun transpose() =
         Matrix(
             Array(columns) { i ->
-                FloatArray(rows) { j ->
+                DoubleArray(rows) { j ->
                     this[j, i]
                 }
             }
@@ -90,17 +90,17 @@ data class Matrix(
 
     fun inverse(): Matrix {
         val la4jMatrix: La4jMatrix =
-            Basic2DMatrix((Array(rows) { i -> DoubleArray(columns) { j -> values[i][j].toDouble() } })).inverse(Matrices.DEFAULT_INVERTOR)
+            Basic2DMatrix((Array(rows) { i -> DoubleArray(columns) { j -> values[i][j] } })).inverse(Matrices.DEFAULT_INVERTOR)
 
         return Matrix(
-            Array(rows) {i -> FloatArray(columns) {j -> la4jMatrix.get(i, j).toFloat()} }
+            Array(rows) {i -> DoubleArray(columns) {j -> la4jMatrix.get(i, j)} }
         )
     }
 
     fun toVector() =
         when {
             rows == 1 -> vector(*values[0])
-            columns == 1 -> Vector(FloatArray(columns) { i -> this[i, 0] })
+            columns == 1 -> Vector(DoubleArray(columns) { i -> this[i, 0] })
             else -> throw MatrixCannotBeTranformedIntoAVector(this)
         }
 
@@ -126,7 +126,7 @@ data class Matrix(
 }
 
 private fun calculateMultiplicationCell(row: Int, column: Int, sharedDim: Int, m1: Matrix, m2: Matrix) =
-    (0 until sharedDim).fold(0f) { accumulated, currentIndex ->
+    (0 until sharedDim).fold(0.0) { accumulated, currentIndex ->
         accumulated + (m1[row, currentIndex] * m2[currentIndex, column])
     }
 

@@ -13,7 +13,7 @@ import kotlin.math.sqrt
 private const val CROSS_PRODUCT_DIMENSION = 3
 
 open class Vector(
-    private val values: FloatArray
+    private val values: DoubleArray
 ) {
 
     init {
@@ -24,7 +24,7 @@ open class Vector(
 
     val norm = norm()
 
-    operator fun get(index: Int): Float =
+    operator fun get(index: Int): Double =
         if (index >= dimension) {
             throw IndexOutOfBoundsException("Vector index $index is out of bounds [0, ${values.size - 1}]")
         } else {
@@ -36,7 +36,7 @@ open class Vector(
             throw IncompatibleVectorsException(dimension, other.dimension)
         } else {
             Vector(
-                FloatArray(dimension) { i -> this[i] + other[i] }
+                DoubleArray(dimension) { i -> this[i] + other[i] }
             )
         }
 
@@ -45,21 +45,21 @@ open class Vector(
             throw IncompatibleVectorsException(dimension, other.dimension)
         } else {
             Vector(
-                FloatArray(dimension) { i -> this[i] - other[i] }
+                DoubleArray(dimension) { i -> this[i] - other[i] }
             )
         }
 
-    operator fun times(factor: Float) =
+    operator fun times(factor: Double) =
         Vector(
-            FloatArray(dimension) { i -> this[i] * factor }
+            DoubleArray(dimension) { i -> this[i] * factor }
         )
 
-    operator fun times(other: Vector): Float =
+    operator fun times(other: Vector): Double =
         if (dimension != other.dimension) {
             throw IncompatibleVectorsException(dimension, other.dimension)
         } else {
             values.zip(other.values) { v1, v2 -> v1 * v2 }
-                .fold(0f) { accumulated, currentValue -> accumulated + currentValue }
+                .fold(0.0) { accumulated, currentValue -> accumulated + currentValue }
         }
 
     /**
@@ -70,7 +70,7 @@ open class Vector(
             throw CrossProductIncompatibilityException(dimension, other.dimension)
         } else {
             Vector(
-                floatArrayOf(
+                doubleArrayOf(
                     this[1] * other[2] - this[2] * other[1],
                     this[2] * other[0] - this[0] * other[2],
                     this[0] * other[1] - this[1] * other[0]
@@ -91,14 +91,14 @@ open class Vector(
             ToMatrix.ROW -> matrix(row(*values))
             ToMatrix.COLUMN ->
                 Matrix(
-                    Array(dimension) { i -> floatArrayOf(values[i])}
+                    Array(dimension) { i -> doubleArrayOf(values[i]) }
                 )
         }
 
     private fun norm() =
         sqrt(
             values
-                .fold(0f) { accumulated, current -> accumulated + current.pow(2) }
+                .fold(0.0) { accumulated, current -> accumulated + current.pow(2) }
         )
 
 
