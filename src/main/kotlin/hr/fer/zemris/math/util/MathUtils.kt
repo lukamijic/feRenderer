@@ -4,16 +4,16 @@ import hr.fer.zemris.math.matrix.Matrix
 import hr.fer.zemris.math.vector.Vector
 import kotlin.math.round
 
-fun vector(vararg values: Float) = Vector(floatArrayOf(*values))
+fun vector(vararg values: Double) = Vector(doubleArrayOf(*values))
 
-fun vector(vararg values: Number) = Vector(values.map(Number::toFloat).toFloatArray())
+fun vector(vararg values: Number) = Vector(values.map(Number::toDouble).toDoubleArray())
 
-fun matrix(vararg rows: FloatArray) = Matrix(arrayOf(*rows))
+fun matrix(vararg rows: DoubleArray) = Matrix(arrayOf(*rows))
 
-fun row(vararg values: Float) = floatArrayOf(*values)
+fun row(vararg values: Double) = doubleArrayOf(*values)
 
-fun row(vararg values: Number) = values.map(Number::toFloat).toFloatArray()
+fun row(vararg values: Number) = values.map(Number::toDouble).toDoubleArray()
 
-fun roundToInt(float: Float) = round(float).toInt()
+fun roundToInt(float: Double) = round(float).toInt()
 
-fun roundToLong(float: Float) = round(float).toLong()
+fun roundToLong(float: Double) = round(float).toLong()

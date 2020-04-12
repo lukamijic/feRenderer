@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.function.Executable
 import java.lang.IndexOutOfBoundsException
 
-private const val DELTA = 0.01f
+private const val DELTA = 0.01
 
 class MatrixTests {
 
@@ -36,9 +36,9 @@ class MatrixTests {
         assertThrows(MatrixCreationException::class.java) {
             Matrix(
                 arrayOf(
-                    floatArrayOf(1f, 3f, 2.32f),
-                    floatArrayOf(1f, 1.2f, 2.1f),
-                    floatArrayOf()
+                    doubleArrayOf(1.0, 3.0, 2.32),
+                    doubleArrayOf(1.0, 1.2, 2.1),
+                    doubleArrayOf()
                 )
             )
         }
@@ -49,9 +49,9 @@ class MatrixTests {
         assertDoesNotThrow {
             Matrix(
                 arrayOf(
-                    floatArrayOf(1f, 3f, 2.32f),
-                    floatArrayOf(1f, 1.2f, 2.1f),
-                    floatArrayOf(12.23f, 23f, 32f)
+                    doubleArrayOf(1.0, 3.0, 2.32),
+                    doubleArrayOf(1.0, 1.2, 2.1),
+                    doubleArrayOf(12.23, 23.0, 32.0)
                 )
             )
         }
@@ -74,41 +74,41 @@ class MatrixTests {
     fun `should get access for normal matrix construction`() {
         val m = Matrix(
             arrayOf(
-                floatArrayOf(1f, 3f, 4.23f),
-                floatArrayOf(1.3f, 3.3f, 4.23f)
+                doubleArrayOf(1.0, 3.0, 4.23),
+                doubleArrayOf(1.3, 3.3, 4.23)
             )
         )
         assertAll(
-            Executable { assertEquals(1f, m[0, 0], DELTA) },
-            Executable { assertEquals(3f, m[0, 1], DELTA) },
-            Executable { assertEquals(4.23f, m[0, 2], DELTA) },
-            Executable { assertEquals(1.3f, m[1, 0], DELTA) },
-            Executable { assertEquals(3.3f, m[1, 1], DELTA) },
-            Executable { assertEquals(4.23f, m[1, 2], DELTA) }
+            Executable { assertEquals(1.0, m[0, 0], DELTA) },
+            Executable { assertEquals(3.0, m[0, 1], DELTA) },
+            Executable { assertEquals(4.23, m[0, 2], DELTA) },
+            Executable { assertEquals(1.3, m[1, 0], DELTA) },
+            Executable { assertEquals(3.3, m[1, 1], DELTA) },
+            Executable { assertEquals(4.23, m[1, 2], DELTA) }
         )
     }
 
     @Test
     fun `should get access for matrix(vararg values) matrix construction`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
         assertAll(
-            Executable { assertEquals(1f, m[0, 0], DELTA) },
-            Executable { assertEquals(3f, m[0, 1], DELTA) },
-            Executable { assertEquals(4.23f, m[0, 2], DELTA) },
-            Executable { assertEquals(1.3f, m[1, 0], DELTA) },
-            Executable { assertEquals(3.3f, m[1, 1], DELTA) },
-            Executable { assertEquals(4.23f, m[1, 2], DELTA) }
+            Executable { assertEquals(1.0, m[0, 0], DELTA) },
+            Executable { assertEquals(3.0, m[0, 1], DELTA) },
+            Executable { assertEquals(4.23, m[0, 2], DELTA) },
+            Executable { assertEquals(1.3, m[1, 0], DELTA) },
+            Executable { assertEquals(3.3, m[1, 1], DELTA) },
+            Executable { assertEquals(4.23, m[1, 2], DELTA) }
         )
     }
 
     @Test
     fun `should get matrix access IndexOutOfBoundsException for row negative index`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[-1, 0] }
@@ -117,8 +117,8 @@ class MatrixTests {
     @Test
     fun `should get matrix access IndexOutOfBoundsException for column negative index`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[0, -1] }
@@ -127,8 +127,8 @@ class MatrixTests {
     @Test
     fun `should get matrix access IndexOutOfBoundsException for row and column negative index`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[-1, -1] }
@@ -137,8 +137,8 @@ class MatrixTests {
     @Test
     fun `should get matrix access IndexOutOfBoundsException where row index is higher than row dimension`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[2, 0] }
@@ -147,8 +147,8 @@ class MatrixTests {
     @Test
     fun `should get matrix access IndexOutOfBoundsException where column index is higher than column dimension`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[0, 3] }
@@ -157,8 +157,8 @@ class MatrixTests {
     @Test
     fun `should get matrix access IndexOutOfBoundsException where both row and columns are out of bounds`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(IndexOutOfBoundsException::class.java) { m[2, 3] }
@@ -167,14 +167,14 @@ class MatrixTests {
     @Test
     fun `should throw MatricesAreNotTheSameDimensionException when adding two matrices of different dimension`() {
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m2 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(MatricesAreNotTheSameDimensionException::class.java) { m1 + m2}
@@ -195,14 +195,14 @@ class MatrixTests {
     @Test
     fun `should throw MatricesAreNotTheSameDimensionException when subbing two matrices of different dimension`(){
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m2 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         assertThrows(MatricesAreNotTheSameDimensionException::class.java) { m1 - m2 }
@@ -223,74 +223,74 @@ class MatrixTests {
     @Test
     fun `should add two matrices`() {
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m2 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m = m1 + m2
         assertAll(
-            Executable { assertArrayEquals(floatArrayOf(2f, 6f, 8.46f), m.extractMatrixRow(0), DELTA) },
-            Executable { assertArrayEquals(floatArrayOf(2.6f, 6.6f, 8.46f), m.extractMatrixRow(1), DELTA) }
+            Executable { assertArrayEquals(doubleArrayOf(2.0, 6.0, 8.46), m.extractMatrixRow(0), DELTA) },
+            Executable { assertArrayEquals(doubleArrayOf(2.6, 6.6, 8.46), m.extractMatrixRow(1), DELTA) }
         )
     }
 
     @Test
     fun `should sub two matrices`() {
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m2 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val m = m1 - m2
         assertAll(
-            Executable { assertArrayEquals(floatArrayOf(0f, 0f, 0f), m.extractMatrixRow(0), DELTA) },
-            Executable { assertArrayEquals(floatArrayOf(0f, 0f, 0f), m.extractMatrixRow(1), DELTA) }
+            Executable { assertArrayEquals(doubleArrayOf(0.0, 0.0, 0.0), m.extractMatrixRow(0), DELTA) },
+            Executable { assertArrayEquals(doubleArrayOf(0.0, 0.0, 0.0), m.extractMatrixRow(1), DELTA) }
         )
     }
 
     @Test
     fun `should multiply matrix with factor`() {
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
-        val m = m1 * 2f
+        val m = m1 * 2.0
         assertAll(
-            Executable { assertArrayEquals(floatArrayOf(2f, 6f, 8.46f), m.extractMatrixRow(0), DELTA) },
-            Executable { assertArrayEquals(floatArrayOf(2.6f, 6.6f, 8.46f), m.extractMatrixRow(1), DELTA) }
+            Executable { assertArrayEquals(doubleArrayOf(2.0, 6.0, 8.46), m.extractMatrixRow(0), DELTA) },
+            Executable { assertArrayEquals(doubleArrayOf(2.6, 6.6, 8.46), m.extractMatrixRow(1), DELTA) }
         )
     }
 
     @Test
     fun `should multiply factor with vector`() {
         val m1 = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
-        val m = 2f * m1
+        val m = 2.0 * m1
         assertAll(
-            Executable { assertArrayEquals(floatArrayOf(2f, 6f, 8.46f), m.extractMatrixRow(0), DELTA) },
-            Executable { assertArrayEquals(floatArrayOf(2.6f, 6.6f, 8.46f), m.extractMatrixRow(1), DELTA) }
+            Executable { assertArrayEquals(doubleArrayOf(2.0, 6.0, 8.46), m.extractMatrixRow(0), DELTA) },
+            Executable { assertArrayEquals(doubleArrayOf(2.6, 6.6, 8.46), m.extractMatrixRow(1), DELTA) }
         )
     }
 
     @Test
     fun `should do correct transpose`() {
         val m = matrix(
-            row(1, 3, 4.23f),
-            row(1.3f, 3.3f, 4.23f)
+            row(1, 3, 4.23),
+            row(1.3, 3.3, 4.23)
         )
 
         val mt = m.transpose()
@@ -343,8 +343,8 @@ class MatrixTests {
 }
 
 private fun Matrix.extractMatrixRow(rowIndex: Int) =
-    FloatArray(columns) { j -> this[rowIndex, j] }
+    DoubleArray(columns) { j -> this[rowIndex, j] }
 
 
 private fun Matrix.extractMatrixColumn(columnIndex: Int) =
-    FloatArray(rows) { i -> this[i, columnIndex] }
+    DoubleArray(rows) { i -> this[i, columnIndex] }

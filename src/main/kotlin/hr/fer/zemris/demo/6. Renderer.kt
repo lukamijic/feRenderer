@@ -19,7 +19,7 @@ fun main() {
     val renderer = FeRenderer(
         Display(1600, 900, "Renderer"),
         CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -200)),
-        FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
+        FovPerspectiveProjection(Math.toRadians(45.0), 16.0/9.0, 0.1, 500.0),
         ScreenSpaceTransform(1600, 900)
     ).apply {
         keyEventProcessor = { keyEvent ->
@@ -48,11 +48,11 @@ fun main() {
 
     val axisMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
 
-    val centerCubeTransform = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
+    val centerCubeTransform = scaleMatrix(2.0) * translateMatrix(-1.0, -1.0 ,-1.0)
 
     val xAxisObject = RenderObject(
         axisMesh,
-        centerCubeTransform * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f),
+        centerCubeTransform * scaleMatrix(20.0, 0.5, 2.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
         Color.GREEN,
         RenderType.DRAW
@@ -60,7 +60,7 @@ fun main() {
 
     val yAxisObject = RenderObject(
         axisMesh,
-        centerCubeTransform * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f),
+        centerCubeTransform * scaleMatrix(0.5, 20.0, 2.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
         Color.WHITE,
         RenderType.DRAW
@@ -68,7 +68,7 @@ fun main() {
 
     val zAxisObject = RenderObject(
         axisMesh,
-        centerCubeTransform * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f),
+        centerCubeTransform * scaleMatrix(2.0, 0.5, 20.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
         Color.YELLOW,
         RenderType.DRAW

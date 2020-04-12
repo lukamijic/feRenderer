@@ -55,7 +55,7 @@ class FeRenderer(
         val vertexIndices = mesh.vertices.indices
 
         val (modelTransformedNormals, normalIndices) = mesh.normals?.let {
-            val normalTransform = Matrix(Array(3) { i -> FloatArray(3) { j -> modelViewTransform[i, j] } }).inverse().transpose()
+            val normalTransform = Matrix(Array(3) { i -> DoubleArray(3) { j -> modelViewTransform[i, j] } }).inverse().transpose()
             IndexedList(transformNormals(it.values, normalTransform), it.indices)
         } ?: calculateNormals(modelTransformVertices, vertexIndices)
 

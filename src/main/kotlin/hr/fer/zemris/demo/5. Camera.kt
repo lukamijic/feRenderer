@@ -22,7 +22,7 @@ fun main() {
     val canvas = display.canvas
 
     val viewPort = ScreenSpaceTransform(display.width, display.height)
-    val fovPerspectiveProjection = FovPerspectiveProjection(Math.toRadians(12.0).toFloat(), display.width.toFloat() / display.height.toFloat(), 0.1f, 500f)
+    val fovPerspectiveProjection = FovPerspectiveProjection(Math.toRadians(12.0), display.width.toDouble() / display.height.toDouble(), 0.1, 500.0)
     val camera = CameraImpl(position = vector(50, 50, 20), target = vector(0, 0, -200))
 
     val axisMesh = cubeVertices
@@ -30,11 +30,11 @@ fun main() {
     while (true) {
         canvas.clear(Color.BLACK)
 
-        val centerCubeTransform = scaleMatrix(2f) * translateMatrix(-1f, -1f ,-1f)
+        val centerCubeTransform = scaleMatrix(2.0) * translateMatrix(-1.0, -1.0 ,-1.0)
 
-        val xAxisTransform = centerCubeTransform * scaleMatrix(20f, 0.5f, 2f) * translateMatrix(0f, 0f, -200f)
-        val yAxisTransform = centerCubeTransform * scaleMatrix(0.5f, 20f, 2f) * translateMatrix(0f, 0f, -200f)
-        val zAxisTransform = centerCubeTransform * scaleMatrix(2f, 0.5f, 20f) * translateMatrix(0f, 0f, -200f)
+        val xAxisTransform = centerCubeTransform * scaleMatrix(20.0, 0.5, 2.0) * translateMatrix(0.0, 0.0, -200.0)
+        val yAxisTransform = centerCubeTransform * scaleMatrix(0.5, 20.0, 2.0) * translateMatrix(0.0, 0.0, -200.0)
+        val zAxisTransform = centerCubeTransform * scaleMatrix(2.0, 0.5, 20.0) * translateMatrix(0.0, 0.0, -200.0)
 
         renderMesh(axisMesh, canvas, Color.WHITE, xAxisTransform, camera.cameraMatrix, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
         renderMesh(axisMesh, canvas, Color.RED, yAxisTransform, camera.cameraMatrix, fovPerspectiveProjection.projectionMatrix, viewPort.viewPortMatrix)
@@ -58,4 +58,4 @@ private fun renderMesh(vertices: List<Vector>, canvas : Canvas, color: Color, mo
 }
 
 private fun vectorToPoint(v1: Vector, modelMatrix: Matrix, cameraMatrix: Matrix, perspective: Matrix, viewPort: Matrix): Point =
-    ((v1.toMatrix(Vector.ToMatrix.ROW) * modelMatrix * cameraMatrix * perspective).let { it * (1f / it[0, 3]) } * viewPort).toVector().let { Point(ceil(it[0]).toInt(), ceil(it[1]).toInt()) }
+    ((v1.toMatrix(Vector.ToMatrix.ROW) * modelMatrix * cameraMatrix * perspective).let { it * (1.0 / it[0, 3]) } * viewPort).toVector().let { Point(ceil(it[0]).toInt(), ceil(it[1]).toInt()) }

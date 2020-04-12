@@ -14,7 +14,7 @@ private val identityMatrixTransform =
         row(0, 0, 0, 1)
     )
 
-fun translateMatrix(deltaX: Float, deltaY: Float, deltaZ: Float) =
+fun translateMatrix(deltaX: Double, deltaY: Double, deltaZ: Double) =
     matrix(
         row(1, 0, 0, 0),
         row(0, 1, 0, 0),
@@ -22,7 +22,7 @@ fun translateMatrix(deltaX: Float, deltaY: Float, deltaZ: Float) =
         row(deltaX, deltaY, deltaZ, 1)
     )
 
-fun rotateXMatrix(angle: Float): Matrix {
+fun rotateXMatrix(angle: Double): Matrix {
     val sin = sin(angle)
     val cos = cos(angle)
 
@@ -34,7 +34,7 @@ fun rotateXMatrix(angle: Float): Matrix {
     )
 }
 
-fun rotateYMatrix(angle: Float): Matrix {
+fun rotateYMatrix(angle: Double): Matrix {
     val sin = sin(angle)
     val cos = cos(angle)
 
@@ -46,7 +46,7 @@ fun rotateYMatrix(angle: Float): Matrix {
     )
 }
 
-fun rotateZMatrix(angle: Float): Matrix {
+fun rotateZMatrix(angle: Double): Matrix {
     val sin = sin(angle)
     val cos = cos(angle)
 
@@ -58,7 +58,7 @@ fun rotateZMatrix(angle: Float): Matrix {
     )
 }
 
-fun scaleMatrix(scale: Float): Matrix =
+fun scaleMatrix(scale: Double): Matrix =
     matrix(
         row(1, 0, 0, 0),
         row(0, 1, 0, 0),
@@ -66,7 +66,7 @@ fun scaleMatrix(scale: Float): Matrix =
         row(0, 0, 0, 1f / scale)
     )
 
-fun scaleMatrix(scaleX: Float, scaleY: Float, scaleZ: Float): Matrix =
+fun scaleMatrix(scaleX: Double, scaleY: Double, scaleZ: Double): Matrix =
     matrix(
         row(scaleX, 0, 0, 0),
         row(0, scaleY, 0, 0),
@@ -74,10 +74,10 @@ fun scaleMatrix(scaleX: Float, scaleY: Float, scaleZ: Float): Matrix =
         row(0, 0, 0, 1)
     )
 
-fun scaleXMatrix(scale: Float): Matrix = scaleMatrix(scale, 1f, 1f)
+fun scaleXMatrix(scale: Double): Matrix = scaleMatrix(scale, 1.0, 1.0)
 
-fun scaleYMatrix(scale: Float): Matrix = scaleMatrix(1f, scale, 1f)
+fun scaleYMatrix(scale: Double): Matrix = scaleMatrix(1.0, scale, 1.0)
 
-fun scaleZMatrix(scale: Float): Matrix = scaleMatrix(1f, 1f, scale)
+fun scaleZMatrix(scale: Double): Matrix = scaleMatrix(1.0, 1.0, scale)
 
 fun identityMatrix(): Matrix = identityMatrixTransform

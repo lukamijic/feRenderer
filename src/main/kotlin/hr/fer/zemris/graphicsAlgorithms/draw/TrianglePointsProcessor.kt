@@ -82,8 +82,8 @@ class TrianglePointsProcessor(
     ) {
         val yStart = minY.y
         val yEnd = maxY.y
-        private val anchorX = minY.x.toFloat()
-        private val xStep = (maxY.x - minY.x).toFloat() / (maxY.y - minY.y).toFloat()
+        private val anchorX = minY.x.toDouble()
+        private val xStep = (maxY.x - minY.x).toDouble() / (maxY.y - minY.y).toDouble()
 
         operator fun get(y: Int): Int {
             if (y !in yStart until yEnd) throw IllegalArgumentException("y = $y should be in range [$yStart, $yEnd>")

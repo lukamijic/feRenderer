@@ -17,7 +17,7 @@ fun main() {
     val renderer = FeRenderer(
         Display(1600, 900, "Camera"),
         CameraImpl(position = vector(0, 0, 20), target = vector(0, 0, -50f)),
-        FovPerspectiveProjection(Math.toRadians(45.0).toFloat(), 16f/9f, 0.1f, 500f),
+        FovPerspectiveProjection(Math.toRadians(45.0), 16.0/9.0, 0.1, 500.0),
         ScreenSpaceTransform(1600, 900)
     ).apply {
         keyEventProcessor = { keyEvent ->
@@ -47,7 +47,7 @@ fun main() {
     val cubeMesh = ObjLoader.load("src/main/resources/obj/simplecube.obj")
     val cubeNormalsMesh = ObjLoader.load("src/main/resources/obj/normalscube.obj")
 
-    var deltaRot = 0f
+    var deltaRot = 0.0
 
     val cubeObject = RenderObject(cubeMesh, identityMatrix(), true, Color.RED, RenderType.DRAW)
     val cubeNormalsObject = RenderObject(cubeNormalsMesh, identityMatrix(), true, Color.GREEN, RenderType.DRAW)
@@ -56,9 +56,11 @@ fun main() {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        cubeObject.modelViewTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(0f, 0f, -50f)
-        cubeNormalsObject.modelViewTransform = scaleMatrix(5f) * scaleYMatrix(2f) * scaleZMatrix(3f) * rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(10f, 0f, -50f)
-        deltaRot += 0.01f
+        cubeObject.modelViewTransform = scaleMatrix(5.0) * scaleYMatrix(2.0) * scaleZMatrix(3.0) *
+                rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(0.0, 0.0, -50.0)
+        cubeNormalsObject.modelViewTransform = scaleMatrix(5.0) * scaleYMatrix(2.0) * scaleZMatrix(3.0) *
+                rotateYMatrix(deltaRot) * rotateXMatrix(deltaRot) * rotateZMatrix(deltaRot) * translateMatrix(10.0, 0.0, -50.0)
+        deltaRot += 0.01
 
         renderer.render(cubeNormalsObject)
         renderer.render(cubeObject)
