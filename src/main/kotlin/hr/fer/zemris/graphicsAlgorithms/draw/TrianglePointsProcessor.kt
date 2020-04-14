@@ -2,12 +2,13 @@ package hr.fer.zemris.graphicsAlgorithms.draw
 
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.util.BoundingBox
 import hr.fer.zemris.math.util.Handedness
 import kotlin.math.ceil
 
 class TrianglePointsProcessor(
-    triangle: Triangle,
+    private val triangle: Triangle,
     private val boundingBox: BoundingBox
 ) {
 
@@ -46,7 +47,7 @@ class TrianglePointsProcessor(
         middleToBottom = TriangleEdgeYToX(midY, maxY)
     }
 
-    fun processPoints(pointProcessor: (Int, Int) -> Unit) {
+    fun processPoints(pointProcessor: (Int, Int, Double) -> Unit) {
         scanTriangleEdges(topToBottom, topToMiddle, handedness, pointProcessor)
         scanTriangleEdges(topToBottom, middleToBottom, handedness, pointProcessor)
     }
@@ -55,7 +56,7 @@ class TrianglePointsProcessor(
         longEdge: TriangleEdgeYToX,
         shortEdge: TriangleEdgeYToX,
         handedness: Handedness,
-        pointProcessor: (Int, Int) -> Unit
+        pointProcessor: (Int, Int, Double) -> Unit
     ) {
         val left = if (handedness == Handedness.LEFT) longEdge else shortEdge
         val right = if (handedness == Handedness.LEFT) shortEdge else longEdge
@@ -68,12 +69,15 @@ class TrianglePointsProcessor(
     /**
      * This methods works correctly if startX is before endX
      */
-    private fun scanLine(startX: Int, endX: Int, y: Int, pointProcessor: (Int, Int) -> Unit) {
+    private fun scanLine(startX: Int, endX: Int, y: Int, pointProcessor: (Int, Int, Double) -> Unit) {
         if ((y in boundingBox.minY..boundingBox.maxY).not()) return
         val xs = if (startX < boundingBox.minX) boundingBox.minX else startX
         val xe = if (endX > boundingBox.maxX) boundingBox.maxX else endX
 
-        (xs..xe).forEach { x -> pointProcessor(x, y) }
+        (xs..xe).forEach { x ->
+            val barycentricCoordinates = BarycentricCoordinatesCalculator.calculateBarycentricCoordinate(triangle, x, y)
+            pointProcessor(x, y, BarycentricCoordinatesCalculator.interpolateZ(triangle.p1.z, triangle.p2.z, triangle.p3.z, barycentricCoordinates))
+        }
     }
 
     private class TriangleEdgeYToX(

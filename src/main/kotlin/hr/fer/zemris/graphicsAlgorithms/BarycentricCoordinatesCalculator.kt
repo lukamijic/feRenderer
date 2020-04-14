@@ -27,6 +27,10 @@ object BarycentricCoordinatesCalculator {
             .roundToInt()
             .toByte()
     }
+
+    fun interpolateZ(z1: Double, z2: Double, z3: Double, barycentricCoordinates: BarycentricCoordinates) = with(barycentricCoordinates) {
+        z1 * w1 + z2 * w2 + z3 * w3
+    }
 }
 
 
