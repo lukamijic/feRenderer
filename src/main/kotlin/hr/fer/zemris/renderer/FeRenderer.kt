@@ -14,7 +14,6 @@ import hr.fer.zemris.renderer.input.KeyEventStorage
 import hr.fer.zemris.renderer.input.KeyListenerAdapter
 import hr.fer.zemris.renderer.projection.Projection
 import hr.fer.zemris.renderer.viewport.ViewPort
-import hr.fer.zemris.resources.mesh.Mesh
 import hr.fer.zemris.util.IndexedList
 import java.awt.event.KeyEvent
 import kotlin.math.ceil
@@ -64,7 +63,7 @@ class FeRenderer(
             .map { it * cameraAndProjectionMatrix }
             .map { it * (1f / it[0, 3]) }
             .map { it * viewPort.viewPortMatrix }
-            .map { Point(ceil(it[0, 0]).toInt(), ceil(it[0, 1]).toInt()) }
+            .map { Point(ceil(it[0, 0]).toInt(), ceil(it[0, 1]).toInt(), it[0, 2]) }
             .toList()
 
         for (i in vertexIndices.indices step 3) {
@@ -91,7 +90,10 @@ class FeRenderer(
         }
     }
 
-    fun clearDisplay() = display.canvas.clear(clearColor)
+    fun clearDisplay() {
+        display.canvas.clearDepth()
+        display.canvas.clear(clearColor)
+    }
 
     fun swapBuffers() = display.swapBuffers()
 

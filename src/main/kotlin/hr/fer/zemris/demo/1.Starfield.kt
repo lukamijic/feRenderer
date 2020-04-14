@@ -62,7 +62,7 @@ class StarField(
         if ((x in 0 until  canvas.width - 1).not() || (y in (0 until canvas.height - 1)).not()) {
             resetStar(index)
         } else {
-            canvas.drawPixel(x, y, Color.WHITE)
+            canvas.drawPixel(x, y, 0.0, Color.WHITE)
         }
     }
 
