@@ -16,10 +16,9 @@ private const val BUFFER_NUMBER = 1
 class Display(
     val frameWidth: Int = DEFAULT_FRAME_SIZE,
     val frameHeight: Int = DEFAULT_FRAME_SIZE,
-    title: String = DEFAULT_FRAME_NAME
+    title: String = DEFAULT_FRAME_NAME,
+    val canvas: Canvas = Canvas(frameWidth, frameHeight)
 ) : AwtCanvas() {
-
-    val canvas = Canvas(frameWidth, frameHeight)
 
     private val frame: JFrame
     private val drawGraphics: Graphics

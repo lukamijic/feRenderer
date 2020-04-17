@@ -3,6 +3,7 @@ package hr.fer.zemris.demo
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.display.Display
+import hr.fer.zemris.display.primitives.PointPrimitive
 import java.util.concurrent.TimeUnit
 import kotlin.math.tan
 
@@ -43,6 +44,7 @@ class StarField(
 
     fun render(canvas: Canvas, delta: Double) {
         canvas.clear(Color.BLACK)
+        canvas.clearDepth()
 
         val halfWidth = canvas.width / 2.0
         val halfHeight =  canvas.height / 2.0
@@ -59,10 +61,11 @@ class StarField(
         val x = (starsX[index]/(starsZ[index] * tanHalfFov) * halfWidth + halfWidth).toInt()
         val y = (starsY[index]/(starsZ[index] * tanHalfFov) * halfHeight + halfHeight).toInt()
 
+        val pointPrimitive = PointPrimitive(x, y, 0.0, Color.WHITE)
         if ((x in 0 until  canvas.width - 1).not() || (y in (0 until canvas.height - 1)).not()) {
             resetStar(index)
         } else {
-            canvas.drawPixel(x, y, 0.0, Color.WHITE)
+            pointPrimitive.draw(canvas)
         }
     }
 

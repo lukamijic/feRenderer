@@ -3,7 +3,9 @@ package hr.fer.zemris.demo
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.demo.util.randomColor
 import hr.fer.zemris.demo.util.randomPoint
+import hr.fer.zemris.demo.util.randomPoint2i
 import hr.fer.zemris.display.Display
+import hr.fer.zemris.display.primitives.LinePrimitive
 
 private val pointRange = -1200..1200
 
@@ -16,13 +18,14 @@ fun main() {
 
     while (true) {
         canvas.clear(Color.BLACK)
+        canvas.clearDepth()
 
         (0..lineCount).forEach {
-            canvas.drawLine(
-                randomPoint(pointRange),
-                randomPoint(pointRange),
+            LinePrimitive(
+                randomPoint2i(pointRange),
+                randomPoint2i(pointRange),
                 randomColor()
-            )
+            ).draw(canvas)
         }
 
         display.swapBuffers()

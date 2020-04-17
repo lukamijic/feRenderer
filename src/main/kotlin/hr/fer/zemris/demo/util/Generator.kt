@@ -2,6 +2,7 @@ package hr.fer.zemris.demo.util
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.geometry.model.Point2i
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -16,6 +17,12 @@ private val colors = listOf(
     Color.YELLOW,
     Color.CYAN
 )
+
+fun randomPoint2i(range: IntRange): Point2i =
+    Point2i(
+        random.nextInt(range),
+        random.nextInt(range)
+    )
 
 fun randomPoint(range: IntRange): Point =
     Point(

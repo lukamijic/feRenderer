@@ -4,6 +4,7 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.demo.util.randomInt
 import hr.fer.zemris.demo.util.randomPoint
 import hr.fer.zemris.display.Display
+import hr.fer.zemris.display.primitives.Triangle1cPrimitive
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
 
@@ -18,53 +19,54 @@ fun main() {
     var prevTime = System.currentTimeMillis()
     while (true) {
         canvas.clear(Color.BLACK)
+        canvas.clearDepth()
 
-        canvas.fillTriangle(
+
+        Triangle1cPrimitive(
             Triangle(
                 Point(-2, 512),
                 Point(1025, 512),
                 Point(512, 0)
-            ), Color.RED)
-        canvas.fillTriangle(
+            ),
+            Color.RED
+        ).draw(canvas)
+
+
+        Triangle1cPrimitive(
             Triangle(
                 Point(-2, 512),
                 Point(1025, 512),
                 Point(512, 1025)
-            ), Color.MAGENTA)
-        canvas.fillTriangle(
+            ),
+            Color.MAGENTA
+        ).draw(canvas)
+
+        Triangle1cPrimitive(
             Triangle(
                 Point(256, 500),
                 Point(768, 500),
                 Point(512, 300)
-            ), Color.YELLOW)
-        canvas.fillTriangle(
+            ),
+            Color.YELLOW
+        ).draw(canvas)
+
+        Triangle1cPrimitive(
             Triangle(
                 Point(15, 564),
                 Point(232, 412),
                 Point(76, 754)
-            ), Color.GREEN)
-        canvas.fillTriangle(
+            ),
+            Color.GREEN
+        ).draw(canvas)
+
+        Triangle1cPrimitive(
             Triangle(
                 Point(900, 700),
                 Point(850, 300),
                 Point(600, 950)
-            ), Color.CYAN)
-
-        if (System.currentTimeMillis() - prevTime >= 5000) {
-            prevTime = System.currentTimeMillis()
-            generatedTriangles = generateTestTriangles(2)
-        }
-
-        generatedTriangles.forEach {
-            canvas.fillTriangle(
-                Triangle(
-                    it.p1,
-                    it.p2,
-                    it.p3
-                ),
-                it.color
-            )
-        }
+            ),
+            Color.CYAN
+        ).draw(canvas)
 
         display.swapBuffers()
     }

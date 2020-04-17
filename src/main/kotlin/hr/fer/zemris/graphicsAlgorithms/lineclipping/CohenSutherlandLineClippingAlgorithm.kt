@@ -1,6 +1,6 @@
 package hr.fer.zemris.graphicsAlgorithms.lineclipping
 
-import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.geometry.model.Point2i
 
 private const val INSIDE = 0 // 0000
 private const val LEFT = 1 // 0001
@@ -21,7 +21,7 @@ class CohenSutherlandLineClippingAlgorithm(
      * return [Pair] of [Point]s where first one will be new start
      * and the other one will be new end.
      */
-    override fun clip(p1: Point, p2: Point ): Pair<Point, Point>? {
+    override fun clip(p1: Point2i, p2: Point2i ): Pair<Point2i, Point2i>? {
         var (x1, y1) = p1
         var (x2, y2) = p2
 
@@ -30,7 +30,7 @@ class CohenSutherlandLineClippingAlgorithm(
 
         while (true) {
             if (areaCode1 == INSIDE && areaCode2 == INSIDE) {
-                return Pair(Point(x1, y1), Point(x2, y2))
+                return Pair(Point2i(x1, y1), Point2i(x2, y2))
             } else if (areaCode1 and areaCode2 != INSIDE) {
                 return null
             }

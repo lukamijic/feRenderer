@@ -17,7 +17,7 @@ class ZBuffer(
         if (depth !in Z_DEPTH_RANGE) {
             false
         } else {
-            if (depthBuffer[index] <= depth) {
+            if (depthBuffer[index] < depth) {
                 false
             } else {
                 depthBuffer[index] = depth

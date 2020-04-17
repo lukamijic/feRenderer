@@ -4,6 +4,7 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.demo.util.randomColor
 import hr.fer.zemris.demo.util.randomPoint
 import hr.fer.zemris.display.Display
+import hr.fer.zemris.display.primitives.Triangle3cPrimitive
 import hr.fer.zemris.geometry.model.Triangle
 
 fun main() {
@@ -12,33 +13,36 @@ fun main() {
     val canvas = display.canvas
 
 
-    var coloredTriangle = ColoredTriangle(
-        Triangle(
-            randomPoint(0..1024),
-            randomPoint(0..1024),
-            randomPoint(0..1024)
-        ),
-        randomColor(),
-        randomColor(),
-        randomColor()
-    )
+    var coloredTriangle =
+        Triangle3cPrimitive(
+            Triangle(
+                randomPoint(0..1024),
+                randomPoint(0..1024),
+                randomPoint(0..1024)
+            ),
+            randomColor(),
+            randomColor(),
+            randomColor()
+        )
     var currentTime = System.currentTimeMillis()
     while (true) {
         canvas.clear(Color.BLACK)
+        canvas.clearDepth()
+
         if (System.currentTimeMillis() - currentTime > 2000) {
             currentTime = System.currentTimeMillis()
-            coloredTriangle = ColoredTriangle(
+            coloredTriangle = Triangle3cPrimitive(
                 Triangle(
                     randomPoint(0..1024),
                     randomPoint(0..1024),
                     randomPoint(0..1024)
                 ),
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                randomColor(),
+                randomColor(),
+                randomColor()
             )
         }
-        with(coloredTriangle) { canvas.fillTriangle(triangle, c1, c2, c3)}
+        coloredTriangle.draw(canvas)
         display.swapBuffers()
     }
 }
