@@ -6,6 +6,7 @@ import hr.fer.zemris.display.depth.ZBuffer
 import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
 import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.geometry.model.Point2i
 import hr.fer.zemris.geometry.model.Triangle
 import hr.fer.zemris.graphicsAlgorithms.draw.TrianglePointsProcessor
 import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
@@ -20,9 +21,10 @@ class Canvas(
     var lineClipping: LineClipping = CohenSutherlandLineClippingAlgorithm(0, width - 1, 0, height - 1)
 ) {
 
+    val canvasBoundingBox = BoundingBox(0, width - 1, 0, height - 1)
+
     private val widthRange = 0 until width
     private val heightRange = 0 until height
-    private val boundingBox = BoundingBox(0, width - 1, 0, height - 1)
     private val rgbComponents = Array(width * height) { RGB.BLACK }
 
     private val zBuffer = ZBuffer(width, height)
@@ -40,50 +42,6 @@ class Canvas(
 
     fun drawPixel(x: Int, y: Int, z: Double, color: Color) = drawPixel(x, y, z, color.toRGB())
 
-    fun drawLine(p1: Point, p2: Point, rgb: RGB) =
-        lineClipping
-            .clip(p1, p2)?.let { (p1, p2) ->
-                BresenhamLineAlgorithm.bresenhamCalculateLine(p1, p2)
-                    .filter(::isPointInCanvas)
-                    .forEach { p ->
-                        drawPixel(p.x, p.y, p.z, rgb)
-                    }
-            }
-
-    fun drawLine(p1: Point, p2: Point, color: Color) =
-        drawLine(p1, p2, color.toRGB())
-
-    fun drawTriangle(triangle: Triangle, color: Color) =
-        with(triangle) {
-            drawLine(p1, p2, color)
-            drawLine(p1, p3, color)
-            drawLine(p2, p3, color)
-        }
-
-    fun fillTriangle(triangle: Triangle, rgb: RGB) =
-        fillTriangle(triangle) { _, _ -> rgb }
-
-    fun fillTriangle(triangle: Triangle, color: Color) =
-        fillTriangle(triangle, color.toRGB())
-
-    fun fillTriangle(triangle: Triangle, rgb1: RGB, rgb2: RGB, rgb3: RGB) =
-        fillTriangle(triangle) { i, j ->
-            val barycentricCoordinates = BarycentricCoordinatesCalculator.calculateBarycentricCoordinate(triangle, i, j)
-            RGB(
-                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.r, rgb2.r, rgb3.r, barycentricCoordinates),
-                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.g, rgb2.g, rgb3.g, barycentricCoordinates),
-                BarycentricCoordinatesCalculator.interpolateColorByte(rgb1.b, rgb2.b, rgb3.b, barycentricCoordinates)
-            )
-        }
-
-    fun fillTriangle(triangle: Triangle, c1: Color, c2: Color, c3: Color) =
-        fillTriangle(triangle, c1.toRGB(), c2.toRGB(), c3.toRGB())
-
-    fun fillTriangle(triangle: Triangle, colorGetterForPixel: (Int, Int) -> RGB) {
-        TrianglePointsProcessor(triangle, boundingBox)
-            .processPoints { x, y, z -> drawPixel(x, y, z, colorGetterForPixel(x, y)) }
-    }
-
     fun clear(rgb: RGB) = Arrays.fill(rgbComponents, rgb)
 
     fun clear(color: Color) = Arrays.fill(rgbComponents, color.toRGB())
@@ -95,7 +53,4 @@ class Canvas(
             dest[i] = rgbComponents[i].toColor().value
         }
     }
-
-    private fun isPointInCanvas(p: Point) =
-        p.x in 0 until width && p.y in 0 until height
 }

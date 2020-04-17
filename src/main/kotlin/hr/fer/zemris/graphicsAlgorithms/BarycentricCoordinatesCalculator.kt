@@ -1,8 +1,6 @@
 package hr.fer.zemris.graphicsAlgorithms
 
-import hr.fer.zemris.extensions.toUnsignedInt
 import hr.fer.zemris.geometry.model.Triangle
-import kotlin.math.roundToInt
 
 object BarycentricCoordinatesCalculator {
 
@@ -20,16 +18,6 @@ object BarycentricCoordinatesCalculator {
         val w3 = 1 - w1 - w2
 
         BarycentricCoordinates(w1, w2, w3)
-    }
-
-    fun interpolateColorByte(c1: Byte, c2: Byte, c3: Byte, barycentricCoordinates: BarycentricCoordinates): Byte = with(barycentricCoordinates) {
-        (c1.toUnsignedInt().toDouble() * w1 + c2.toUnsignedInt().toDouble() * w2 + c3.toUnsignedInt().toDouble() * w3)
-            .roundToInt()
-            .toByte()
-    }
-
-    fun interpolateZ(z1: Double, z2: Double, z3: Double, barycentricCoordinates: BarycentricCoordinates) = with(barycentricCoordinates) {
-        z1 * w1 + z2 * w2 + z3 * w3
     }
 }
 

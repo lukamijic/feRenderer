@@ -2,6 +2,7 @@ package hr.fer.zemris.graphicsAlgorithms.draw
 
 import hr.fer.zemris.geometry.model.Point
 import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinates
 import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
 import hr.fer.zemris.graphicsAlgorithms.util.BoundingBox
 import hr.fer.zemris.math.util.Handedness
@@ -76,8 +77,12 @@ class TrianglePointsProcessor(
 
         (xs..xe).forEach { x ->
             val barycentricCoordinates = BarycentricCoordinatesCalculator.calculateBarycentricCoordinate(triangle, x, y)
-            pointProcessor(x, y, BarycentricCoordinatesCalculator.interpolateZ(triangle.p1.z, triangle.p2.z, triangle.p3.z, barycentricCoordinates))
+            pointProcessor(x, y, interpolateZ(triangle.p1.z, triangle.p2.z, triangle.p3.z, barycentricCoordinates))
         }
+    }
+
+    private fun interpolateZ(z1: Double, z2: Double, z3: Double, barycentricCoordinates: BarycentricCoordinates) = with(barycentricCoordinates) {
+        z1 * w1 + z2 * w2 + z3 * w3
     }
 
     private class TriangleEdgeYToX(

@@ -1,39 +1,36 @@
 package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
-import hr.fer.zemris.demo.util.LineData
+import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.display.primitives.LinePrimitive
+import hr.fer.zemris.geometry.model.Point2i
 import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
 
 private val rectangle = listOf(
-    LineData(Point(200, 200), Point(800, 200), Color.WHITE),
-    LineData(Point(800, 200), Point(800, 800), Color.WHITE),
-    LineData(Point(800, 800), Point(200, 800), Color.WHITE),
-    LineData(Point(200, 800), Point(200, 200), Color.WHITE)
+    LinePrimitive(Point2i(200, 200), Point2i(800, 200), Color.WHITE),
+    LinePrimitive(Point2i(800, 200), Point2i(800, 800), Color.WHITE),
+    LinePrimitive(Point2i(800, 800), Point2i(200, 800), Color.WHITE),
+    LinePrimitive(Point2i(200, 800), Point2i(200, 200), Color.WHITE)
 )
 
 private val lines = listOf(
-    LineData(Point(150, 500), Point(850, 500), Color.RED),
-    LineData(Point(-1, 500), Point(500, -1), Color.GREEN),
-    LineData(Point(199, 801), Point(801, 199), Color.GREEN),
-    LineData(Point(150, 150), Point(850, 850), Color.RED)
+    LinePrimitive(Point2i(150, 500), Point2i(850, 500), Color.RED),
+    LinePrimitive(Point2i(-1, 500), Point2i(500, -1), Color.GREEN),
+    LinePrimitive(Point2i(199, 801), Point2i(801, 199), Color.GREEN),
+    LinePrimitive(Point2i(150, 150), Point2i(850, 850), Color.RED)
 )
 
 fun main() {
-    val display = Display(1024, 1024, "Cohen Sutherland Clipping")
+    val display = Display(1024, 1024, "Cohen Sutherland Clipping", Canvas(1024, 1024, CohenSutherlandLineClippingAlgorithm(200, 800, 200, 800)))
     val canvas = display.canvas
-    canvas.lineClipping = CohenSutherlandLineClippingAlgorithm(200, 800, 200, 800)
     while (true) {
         canvas.clear(Color.BLACK)
+        canvas.clearDepth()
 
-        rectangle.forEach {
-            canvas.drawLine(it.p1, it.p2, it.color)
-        }
+        rectangle.forEach { it.draw(canvas) }
 
-        lines.forEach {
-            canvas.drawLine(it.p1, it.p2, it.color)
-        }
+        lines.forEach { it.draw(canvas) }
 
         display.swapBuffers()
     }
