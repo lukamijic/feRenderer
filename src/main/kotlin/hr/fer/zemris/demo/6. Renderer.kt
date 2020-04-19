@@ -2,13 +2,11 @@ package hr.fer.zemris.demo
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.math.transformations.identityMatrix
 import hr.fer.zemris.math.transformations.scaleMatrix
 import hr.fer.zemris.math.transformations.translateMatrix
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
-import hr.fer.zemris.renderer.RenderObject
-import hr.fer.zemris.renderer.RenderType
+import hr.fer.zemris.renderer.MeshRenderObject
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
@@ -50,28 +48,25 @@ fun main() {
 
     val centerCubeTransform = scaleMatrix(2.0) * translateMatrix(-1.0, -1.0 ,-1.0)
 
-    val xAxisObject = RenderObject(
+    val xAxisObject = MeshRenderObject(
         axisMesh,
         centerCubeTransform * scaleMatrix(20.0, 0.5, 2.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
-        Color.GREEN,
-        RenderType.DRAW
+        Color.GREEN
     )
 
-    val yAxisObject = RenderObject(
+    val yAxisObject = MeshRenderObject(
         axisMesh,
         centerCubeTransform * scaleMatrix(0.5, 20.0, 2.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
-        Color.WHITE,
-        RenderType.DRAW
+        Color.WHITE
     )
 
-    val zAxisObject = RenderObject(
+    val zAxisObject = MeshRenderObject(
         axisMesh,
         centerCubeTransform * scaleMatrix(2.0, 0.5, 20.0) * translateMatrix(0.0, 0.0, -200.0),
         true,
-        Color.YELLOW,
-        RenderType.DRAW
+        Color.YELLOW
     )
 
     while (true) {

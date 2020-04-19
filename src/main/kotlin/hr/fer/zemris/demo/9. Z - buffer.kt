@@ -6,8 +6,7 @@ import hr.fer.zemris.display.Display
 import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
-import hr.fer.zemris.renderer.RenderObject
-import hr.fer.zemris.renderer.RenderType
+import hr.fer.zemris.renderer.FillRenderObject
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
@@ -50,39 +49,33 @@ fun main() {
     val teddyMesh = ObjLoader.load("src/main/resources/obj/teddy.obj")
     val foxMesh = ObjLoader.load("src/main/resources/obj/fox.obj")
 
-    val sphereObject = RenderObject(
+    val sphereObject = FillRenderObject(
         sphereMesh,
         scaleMatrix(0.75) * scaleXMatrix(3.0) * translateMatrix(1.0, 0.0, -12.0),
         true,
-        Color.RED,
-        RenderType.FILL
+        Color.RED
     )
 
-    val cubeObject = RenderObject(
+    val cubeObject = FillRenderObject(
         cubeMesh,
         scaleMatrix(1.5) * translateMatrix(-1.0, 0.0, -8.0),
         true,
-        Color.GREEN,
-        RenderType.FILL
+        Color.GREEN
     )
 
-    val teddyObject = RenderObject(
+    val teddyObject = FillRenderObject(
         teddyMesh,
         identityMatrix(),
         true,
-        Color.YELLOW,
-        RenderType.FILL
+        Color.YELLOW
     )
 
-    val foxObject = RenderObject(
+    val foxObject = FillRenderObject(
         foxMesh,
         identityMatrix(),
         true,
-        RGB(255.toByte(), 127.toByte(), 0.toByte()).toColor(),
-        RenderType.FILL
+        RGB(255.toByte(), 127.toByte(), 0.toByte()).toColor()
     )
-
-
 
     var deltaZ = 0.05
     var counter = 0

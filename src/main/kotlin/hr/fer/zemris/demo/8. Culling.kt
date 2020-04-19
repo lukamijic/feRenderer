@@ -5,8 +5,7 @@ import hr.fer.zemris.display.Display
 import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
-import hr.fer.zemris.renderer.RenderObject
-import hr.fer.zemris.renderer.RenderType
+import hr.fer.zemris.renderer.MeshRenderObject
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
@@ -49,8 +48,8 @@ fun main() {
 
     var deltaRot = 0.0
 
-    val cubeObject = RenderObject(cubeMesh, identityMatrix(), true, Color.RED, RenderType.DRAW)
-    val cubeNormalsObject = RenderObject(cubeNormalsMesh, identityMatrix(), true, Color.GREEN, RenderType.DRAW)
+    val cubeObject = MeshRenderObject(cubeMesh, identityMatrix(), true, Color.RED)
+    val cubeNormalsObject = MeshRenderObject(cubeNormalsMesh, identityMatrix(), true, Color.GREEN)
 
     while (true) {
         renderer.clearDisplay()

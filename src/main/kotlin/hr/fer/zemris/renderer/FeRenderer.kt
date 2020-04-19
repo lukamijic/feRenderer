@@ -2,13 +2,10 @@ package hr.fer.zemris.renderer
 
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Display
-import hr.fer.zemris.display.primitives.Primitive
+import hr.fer.zemris.display.primitives.BitmapTrianglePrimitive
 import hr.fer.zemris.display.primitives.Triangle1cPrimitive
 import hr.fer.zemris.display.primitives.UnfilledTrianglePrimitive
-import hr.fer.zemris.geometry.model.Point
-import hr.fer.zemris.geometry.model.Point2i
-import hr.fer.zemris.geometry.model.Triangle
-import hr.fer.zemris.geometry.model.Triangle2i
+import hr.fer.zemris.geometry.model.*
 import hr.fer.zemris.graphicsAlgorithms.NormalCalculator
 import hr.fer.zemris.graphicsAlgorithms.culling.Culling
 import hr.fer.zemris.graphicsAlgorithms.util.removeHomogeneousCoordinate
@@ -60,9 +57,13 @@ class FeRenderer(
         } ?: calculateNormals(modelTransformVertices, vertexIndices)
 
         val cameraAndProjectionMatrix = camera.cameraMatrix * projection.projectionMatrix
+        val textureWs = mutableListOf<Double>()
         val points = modelTransformVertices.asSequence()
             .map { it * cameraAndProjectionMatrix }
-            .map { it * (1f / it[0, 3]) }
+            .map {
+                textureWs.add(it[0, 3])
+                it * (1f / it[0, 3])
+            }
             .map { it * viewPort.viewPortMatrix }
             .map { Point(ceil(it[0, 0]).toInt(), ceil(it[0, 1]).toInt(), it[0, 2]) }
             .toList()
@@ -76,12 +77,36 @@ class FeRenderer(
             if (enableCulling) {
                 val v = modelTransformVertices[vertexIndices[i]].toVector().removeHomogeneousCoordinate()
 
-                if (Culling.cull(normal, camera.cameraPosition - v)) {
-                    toRenderingPrimitive(p1, p2, p3, color, renderType).draw(display.canvas)
+                if (!Culling.cull(normal, camera.cameraPosition - v)) {
+                    continue
                 }
-            } else {
-                toRenderingPrimitive(p1, p2, p3, color, renderType).draw(display.canvas)
             }
+
+            when (renderObject) {
+                is MeshRenderObject -> UnfilledTrianglePrimitive(
+                    Triangle2i(
+                        Point2i(p1.x, p1.y),
+                        Point2i(p2.x, p2.y),
+                        Point2i(p3.x, p3.y)
+                    ), renderObject.color
+                )
+                is FillRenderObject -> Triangle1cPrimitive(Triangle(p1, p2, p3), renderObject.color)
+                is BitmapRenderObject -> {
+                    val (texels, texelsIndices) = mesh.texels!!
+
+                    val t1 = texels[texelsIndices[i]] * (1.0 / textureWs[vertexIndices[i]])
+                    val t2 = texels[texelsIndices[i + 1]] * (1.0 / textureWs[vertexIndices[i + 1]])
+                    val t3 = texels[texelsIndices[i + 2]] * (1.0 / textureWs[vertexIndices[i + 2]])
+
+                    BitmapTrianglePrimitive(
+                        Triangle(p1, p2, p3),
+                        Point3d(t1[0], t1[1], (1.0 / textureWs[vertexIndices[i]])),
+                        Point3d(t2[0], t2[1], (1.0 / textureWs[vertexIndices[i + 1]])),
+                        Point3d(t3[0], t3[1], (1.0 / textureWs[vertexIndices[i + 2]])),
+                        renderObject.bitmap
+                    )
+                }
+            }.draw(display.canvas)
         }
     }
 
@@ -117,19 +142,4 @@ class FeRenderer(
             },
             vertexIndices.indices.map { i -> i / POLYGON_VERTICES }
         )
-
-    private fun toRenderingPrimitive(p1: Point, p2: Point, p3: Point, color: Color, renderType: RenderType): Primitive =
-        when (renderType) {
-            RenderType.DRAW -> {
-                UnfilledTrianglePrimitive(
-                    Triangle2i(
-                        Point2i(p1.x, p1.y),
-                        Point2i(p2.x, p2.y),
-                        Point2i(p3.x, p3.y)
-                    ), color
-                )
-            }
-            RenderType.FILL ->
-                Triangle1cPrimitive(Triangle(p1, p2, p3), color)
-        }
 }
