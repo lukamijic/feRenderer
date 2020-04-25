@@ -48,8 +48,8 @@ fun main() {
 
     var deltaRot = 0.0
 
-    val cubeObject = MeshRenderObject(cubeMesh, identityMatrix(), true, Color.RED)
-    val cubeNormalsObject = MeshRenderObject(cubeNormalsMesh, identityMatrix(), true, Color.GREEN)
+    val cubeObject = MeshRenderObject("cube", cubeMesh,  Color.RED)
+    val cubeNormalsObject = MeshRenderObject("cubeNormals", cubeNormalsMesh,  Color.GREEN)
 
     while (true) {
         renderer.clearDisplay()

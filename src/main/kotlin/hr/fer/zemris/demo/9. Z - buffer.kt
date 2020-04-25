@@ -50,30 +50,28 @@ fun main() {
     val foxMesh = ObjLoader.load("src/main/resources/obj/fox.obj")
 
     val sphereObject = FillRenderObject(
+        "sphere",
         sphereMesh,
-        scaleMatrix(0.75) * scaleXMatrix(3.0) * translateMatrix(1.0, 0.0, -12.0),
-        true,
-        Color.RED
+        Color.RED,
+        scaleMatrix(0.75) * scaleXMatrix(3.0) * translateMatrix(1.0, 0.0, -12.0)
     )
 
     val cubeObject = FillRenderObject(
+        "cube",
         cubeMesh,
-        scaleMatrix(1.5) * translateMatrix(-1.0, 0.0, -8.0),
-        true,
-        Color.GREEN
+        Color.GREEN,
+        scaleMatrix(1.5) * translateMatrix(-1.0, 0.0, -8.0)
     )
 
     val teddyObject = FillRenderObject(
+        "teddy",
         teddyMesh,
-        identityMatrix(),
-        true,
         Color.YELLOW
     )
 
     val foxObject = FillRenderObject(
+        "fox",
         foxMesh,
-        identityMatrix(),
-        true,
         RGB(255.toByte(), 127.toByte(), 0.toByte()).toColor()
     )
 

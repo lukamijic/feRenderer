@@ -10,11 +10,13 @@ import hr.fer.zemris.graphicsAlgorithms.NormalCalculator
 import hr.fer.zemris.graphicsAlgorithms.culling.Culling
 import hr.fer.zemris.graphicsAlgorithms.util.removeHomogeneousCoordinate
 import hr.fer.zemris.math.matrix.Matrix
+import hr.fer.zemris.math.transformations.identityMatrix
 import hr.fer.zemris.math.vector.Vector
 import hr.fer.zemris.renderer.camera.Camera
 import hr.fer.zemris.renderer.input.KeyEventStorage
 import hr.fer.zemris.renderer.input.KeyListenerAdapter
 import hr.fer.zemris.renderer.projection.Projection
+import hr.fer.zemris.renderer.scene.Scene
 import hr.fer.zemris.renderer.viewport.ViewPort
 import hr.fer.zemris.util.IndexedList
 import java.awt.event.KeyEvent
@@ -45,14 +47,20 @@ class FeRenderer(
         )
     }
 
-    fun render(renderObject: RenderObject): Unit = renderObject.run {
+    fun render(scene: Scene) {
+        scene.renderObjects.forEach { render(it, scene.globalModelViewMatrix) }
+        scene.children.forEach { render(it) }
+    }
+
+    fun render(renderObject: RenderObject, sceneModelMatrix: Matrix = identityMatrix()): Unit = renderObject.run {
+        val modelViewTransformMatrix = modelViewTransform * sceneModelMatrix
         val modelTransformVertices =
-            mesh.vertices.values.map { vector -> vector.toMatrix(Vector.ToMatrix.ROW) * modelViewTransform }
+            mesh.vertices.values.map { vector -> vector.toMatrix(Vector.ToMatrix.ROW) * modelViewTransformMatrix }
         val vertexIndices = mesh.vertices.indices
 
         val (modelTransformedNormals, normalIndices) = mesh.normals?.let {
             val normalTransform =
-                Matrix(Array(3) { i -> DoubleArray(3) { j -> modelViewTransform[i, j] } }).inverse().transpose()
+                Matrix(Array(3) { i -> DoubleArray(3) { j -> modelViewTransformMatrix[i, j] } }).inverse().transpose()
             IndexedList(transformNormals(it.values, normalTransform), it.indices)
         } ?: calculateNormals(modelTransformVertices, vertexIndices)
 

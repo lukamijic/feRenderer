@@ -47,10 +47,11 @@ fun main() {
     }
 
     val temple = MeshRenderObject(
+        "temple",
         ObjLoader.load("src/main/resources/obj/temple.obj"),
+        Color.WHITE,
         identityMatrix(),
-        true,
-        Color.WHITE
+        true
     )
 
     var deltaRot = 0.0

@@ -7,6 +7,7 @@ import hr.fer.zemris.renderer.BitmapRenderObject
 import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
+import hr.fer.zemris.renderer.scene.Scene
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
 import hr.fer.zemris.resources.loader.BitmapLoader
 import hr.fer.zemris.resources.loader.ObjLoader
@@ -82,31 +83,43 @@ fun main() {
         identityMatrix()
     )
 
+    val rootScene = Scene("rootScene", identityMatrix()).apply {
+        addRenderObject(grass)
+        addRenderObject(fox)
+        addChild(
+            Scene("sunScene", translateMatrix(0.0, 20.0, -10.0)).apply {
+                addRenderObject(sun)
+                addChild(
+                    Scene("earthScene", identityMatrix()).apply {
+                        addRenderObject(earth)
+                        addChild(Scene("moonScene", identityMatrix()).apply {
+                            addRenderObject(moon)
+                        })
+                    }
+                )
+            }
+        )
+    }
+
+
     var deltaRot = 0.0
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
-        sun.modelViewTransform =
-            scaleMatrix(0.5) * rotateYMatrix(deltaRot / 5.0) * translateMatrix(0.0, 20.0, -10.0)
-
-        earth.modelViewTransform =
-            scaleMatrix(0.2) * rotateYMatrix(deltaRot / 2.0) * translateMatrix(30.0, 0.0, 0.0) *
-                    rotateYMatrix(deltaRot) * translateMatrix(0.0, 20.0, -10.0)
-
-        moon.modelViewTransform =
-            scaleMatrix(0.1) * rotateYMatrix(deltaRot / 5.0) * translateMatrix(10.0, 0.0, 0.0) *
-                    rotateYMatrix(deltaRot * 2.0) *  translateMatrix(30.0, 0.0, 0.0) * rotateYMatrix(deltaRot) * translateMatrix(0.0, 20.0, -10.0)
-
         deltaRot+=0.01
+        rootScene.renderObject("sun")?.modelViewTransform =
+            scaleMatrix(0.5) * rotateYMatrix(deltaRot / 5.0)
 
-        renderer.render(grass)
-        renderer.render(fox)
-        renderer.render(sun)
-        renderer.render(earth)
-        renderer.render(moon)
+        rootScene.child("earthScene")?.modelViewMatrix = translateMatrix(30.0, 0.0, 0.0) * rotateYMatrix(deltaRot)
+        rootScene.renderObject("earth")?.modelViewTransform =
+            scaleMatrix(0.2) * rotateYMatrix(deltaRot / 2.0)
+
+        rootScene.child("moonScene")?.modelViewMatrix = translateMatrix(10.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 2.0)
+        rootScene.renderObject("moon")?.modelViewTransform = scaleMatrix(0.1) * rotateYMatrix(deltaRot / 5.0)
+
+        renderer.render(rootScene)
 
         renderer.swapBuffers()
     }
-
 }

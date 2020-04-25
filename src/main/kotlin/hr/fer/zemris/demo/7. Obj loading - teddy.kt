@@ -47,10 +47,11 @@ fun main() {
     }
 
     val teddy = MeshRenderObject(
+        "teddy",
         ObjLoader.load("src/main/resources/obj/teddy.obj"),
+        Color.WHITE,
         identityMatrix(),
-        true,
-        Color.WHITE
+        true
     )
 
     var deltaRot = 0.0

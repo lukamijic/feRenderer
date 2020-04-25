@@ -49,24 +49,27 @@ fun main() {
     val centerCubeTransform = scaleMatrix(2.0) * translateMatrix(-1.0, -1.0 ,-1.0)
 
     val xAxisObject = MeshRenderObject(
+        "xAxis",
         axisMesh,
+        Color.GREEN,
         centerCubeTransform * scaleMatrix(20.0, 0.5, 2.0) * translateMatrix(0.0, 0.0, -200.0),
-        true,
-        Color.GREEN
+        true
     )
 
     val yAxisObject = MeshRenderObject(
+        "yAxis",
         axisMesh,
+        Color.WHITE,
         centerCubeTransform * scaleMatrix(0.5, 20.0, 2.0) * translateMatrix(0.0, 0.0, -200.0),
-        true,
-        Color.WHITE
+        true
     )
 
     val zAxisObject = MeshRenderObject(
+        "zAxis",
         axisMesh,
+        Color.YELLOW,
         centerCubeTransform * scaleMatrix(2.0, 0.5, 20.0) * translateMatrix(0.0, 0.0, -200.0),
-        true,
-        Color.YELLOW
+        true
     )
 
     while (true) {
