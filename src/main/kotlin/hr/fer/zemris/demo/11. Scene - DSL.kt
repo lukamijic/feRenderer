@@ -3,13 +3,11 @@ package hr.fer.zemris.demo
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.math.transformations.*
 import hr.fer.zemris.math.util.vector
-import hr.fer.zemris.renderer.BitmapRenderObject
 import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
+import hr.fer.zemris.renderer.dsl.scene
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
-import hr.fer.zemris.renderer.scene.Scene
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
-import hr.fer.zemris.resources.loader.BitmapLoader
 import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
@@ -44,70 +42,13 @@ fun main() {
         }
     }
 
-    val cubeMesh = ObjLoader.load("src/main/resources/obj/cube.obj")
-    val foxMesh = ObjLoader.load("src/main/resources/obj/fox.obj")
-    val sphereMesh = ObjLoader.load("src/main/resources/obj/spherehighres.obj")
-
-    val grass = BitmapRenderObject(
-        "grass",
-        cubeMesh,
-        BitmapLoader.load("src/main/resources/texture/grass.jpg"),
-        scaleYMatrix(0.1) * scaleXMatrix(20.0) * scaleZMatrix(20.0) * translateMatrix(0.0, -5.0, -10.0)
-    )
-
-    val fox = BitmapRenderObject(
-        "fox",
-        foxMesh,
-        BitmapLoader.load("src/main/resources/texture/fox_texture.png"),
-        scaleMatrix(0.1) * translateMatrix(0.0, -5.0, -10.0)
-    )
-
-    val earth = BitmapRenderObject(
-        "earth",
-        sphereMesh,
-        BitmapLoader.load("src/main/resources/texture/earth.jpg"),
-        identityMatrix()
-    )
-
-    val moon = BitmapRenderObject(
-        "moon",
-        sphereMesh,
-        BitmapLoader.load("src/main/resources/texture/moon.jpg"),
-        identityMatrix()
-    )
-
-    val sun = BitmapRenderObject(
-        "sun",
-        sphereMesh,
-        BitmapLoader.load("src/main/resources/texture/sun.jpg"),
-        identityMatrix()
-    )
-
-    val rootScene = Scene("rootScene", identityMatrix()).apply {
-        addRenderObject(grass)
-        addRenderObject(fox)
-        addChild(
-            Scene("sunScene", translateMatrix(0.0, 20.0, -10.0)).apply {
-                addRenderObject(sun)
-                addChild(
-                    Scene("earthScene", identityMatrix()).apply {
-                        addRenderObject(earth)
-                        addChild(Scene("moonScene", identityMatrix()).apply {
-                            addRenderObject(moon)
-                        })
-                    }
-                )
-            }
-        )
-    }
-
-
     var deltaRot = 0.0
     while (true) {
         renderer.clearDisplay()
         renderer.processKeyEvents()
 
         deltaRot+=0.01
+
         rootScene.renderObject("sun")?.modelViewTransform =
             scaleMatrix(0.5) * rotateYMatrix(deltaRot / 5.0)
 
@@ -121,5 +62,64 @@ fun main() {
         renderer.render(rootScene)
 
         renderer.swapBuffers()
+    }
+}
+
+val cubeMesh = ObjLoader.load("src/main/resources/obj/cube.obj")
+val foxMesh = ObjLoader.load("src/main/resources/obj/fox.obj")
+val sphereMesh = ObjLoader.load("src/main/resources/obj/spherehighres.obj")
+
+val rootScene = scene {
+    id = "rootScene"
+    renderObjects {
+        bitmapRenderObject {
+            id = "grass"
+            mesh = cubeMesh
+            bitmapRes = "src/main/resources/texture/grass.jpg"
+            modelViewMatrix = scaleYMatrix(0.1) * scaleXMatrix(20.0) * scaleZMatrix(20.0) * translateMatrix(0.0, -5.0, -10.0)
+        }
+        bitmapRenderObject {
+            id = "fox"
+            mesh = foxMesh
+            bitmapRes = "src/main/resources/texture/fox_texture.png"
+            modelViewMatrix = scaleMatrix(0.1) * translateMatrix(0.0, -5.0, -10.0)
+        }
+    }
+    scenes {
+        scene {
+            id = "sunScene"
+            modelViewMatrix = translateMatrix(0.0, 20.0, -10.0)
+            renderObjects {
+                bitmapRenderObject {
+                    id = "sun"
+                    mesh = sphereMesh
+                    bitmapRes = "src/main/resources/texture/sun.jpg"
+                }
+            }
+            scenes {
+                scene {
+                    id = "earthScene"
+                    renderObjects {
+                        bitmapRenderObject {
+                            id = "earth"
+                            mesh = sphereMesh
+                            bitmapRes = "src/main/resources/texture/earth.jpg"
+                        }
+                    }
+                    scenes {
+                        scene {
+                            id = "moonScene"
+                            renderObjects {
+                                bitmapRenderObject {
+                                    id = "moon"
+                                    mesh = sphereMesh
+                                    bitmapRes = "src/main/resources/texture/moon.jpg"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

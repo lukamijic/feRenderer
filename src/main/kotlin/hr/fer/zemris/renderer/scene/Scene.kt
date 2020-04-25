@@ -49,16 +49,18 @@ class Scene(
         childrenInternal.add(scene)
     }
 
-    fun addRenderObject(renderObject: RenderObject) = renderObjectsInternal.add(renderObject)
+    fun addRenderObject(renderObject: RenderObject) {
+        renderObjectsInternal.add(renderObject)
+    }
 
-    fun findChild(sceneId: String): Scene? {
+    fun child(sceneId: String): Scene? {
         val child = childrenInternal.find { it.sceneId == sceneId }
 
         if (child != null) {
             return child
         } else {
             for (c in childrenInternal) {
-                val findChild = c.findChild(sceneId)
+                val findChild = c.child(sceneId)
                 if (findChild != null) {
                     return findChild
                 }
@@ -68,14 +70,14 @@ class Scene(
         return null
     }
 
-    fun findRenderObject(renderObjectId: String): RenderObject? {
+    fun renderObject(renderObjectId: String): RenderObject? {
         val renderObject = renderObjectsInternal.find { it.id == renderObjectId }
 
         if (renderObject != null) {
             return renderObject
         } else {
             for (c in childrenInternal) {
-                val ro = c.findRenderObject(renderObjectId)
+                val ro = c.renderObject(renderObjectId)
                 if (ro != null) {
                     return ro
                 }
