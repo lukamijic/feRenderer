@@ -5,12 +5,12 @@ import hr.fer.zemris.math.transformations.identityMatrix
 import hr.fer.zemris.renderer.RenderObject
 import java.lang.IllegalArgumentException
 
-class Scene(
+open class Scene(
     val sceneId: String,
-    var modelViewMatrix: Matrix = identityMatrix()
+    modelViewMatrixInitial: Matrix = identityMatrix()
 ) {
 
-    var parent: Scene? = null
+    open var parent: Scene? = null
         set(value) {
             if (value == null) {
                 field = value
@@ -22,6 +22,8 @@ class Scene(
                 }
             }
         }
+
+    open var modelViewMatrix = modelViewMatrixInitial
 
     val globalModelViewMatrix: Matrix
         get() {
