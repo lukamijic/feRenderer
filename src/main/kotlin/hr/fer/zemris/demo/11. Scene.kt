@@ -7,6 +7,7 @@ import hr.fer.zemris.renderer.BitmapRenderObject
 import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
+import hr.fer.zemris.renderer.scene.RootScene
 import hr.fer.zemris.renderer.scene.Scene
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
 import hr.fer.zemris.resources.loader.BitmapLoader
@@ -83,7 +84,7 @@ fun main() {
         identityMatrix()
     )
 
-    val rootScene = Scene("rootScene", identityMatrix()).apply {
+    val rootScene = RootScene("rootScene").apply {
         addRenderObject(grass)
         addRenderObject(fox)
         addChild(
@@ -100,7 +101,6 @@ fun main() {
             }
         )
     }
-
 
     var deltaRot = 0.0
     while (true) {

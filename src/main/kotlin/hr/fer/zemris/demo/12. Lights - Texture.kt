@@ -6,7 +6,8 @@ import hr.fer.zemris.math.util.vector
 import hr.fer.zemris.renderer.FeRenderer
 import hr.fer.zemris.renderer.camera.CameraImpl
 import hr.fer.zemris.renderer.dsl.rootScene
-import hr.fer.zemris.renderer.dsl.scene
+import hr.fer.zemris.renderer.lightning.Intensity
+import hr.fer.zemris.renderer.lightning.LightCoefs
 import hr.fer.zemris.renderer.projection.FovPerspectiveProjection
 import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
 import hr.fer.zemris.resources.loader.ObjLoader
@@ -14,7 +15,7 @@ import java.awt.event.KeyEvent
 
 fun main() {
     val renderer = FeRenderer(
-        Display(2000, 1500, "Texture"),
+        Display(2000, 1500, "Lightning - Texture"),
         CameraImpl(position = vector(-1.88, 78.20, 75.65), target = vector(0, 0, -10f)),
         FovPerspectiveProjection(Math.toRadians(45.0), 2000.0 / 1500.0, 0.1, 500.0),
         ScreenSpaceTransform(2000, 1500)
@@ -72,19 +73,29 @@ private val sphereMesh = ObjLoader.load("src/main/resources/obj/spherehighres.ob
 
 private val rootScene = rootScene {
     id = "rootScene"
+    lights {
+        light {
+            id = "light"
+            position = vector(0.0, 20.0, -10.0)
+            ambientIntensity = Intensity(100.0)
+            intensity = Intensity(250.0)
+        }
+    }
     renderObjects {
-        bitmapRenderObject {
+        gouraudShadingBitmapRenderObject {
             id = "grass"
             mesh = cubeMesh
             bitmapRes = "src/main/resources/texture/grass.jpg"
             modelViewMatrix =
                 scaleYMatrix(0.1) * scaleXMatrix(20.0) * scaleZMatrix(20.0) * translateMatrix(0.0, -5.0, -10.0)
+            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
         }
-        bitmapRenderObject {
+        gouraudShadingBitmapRenderObject {
             id = "fox"
             mesh = foxMesh
             bitmapRes = "src/main/resources/texture/fox_texture.png"
             modelViewMatrix = scaleMatrix(0.1) * translateMatrix(0.0, -5.0, -10.0)
+            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
         }
     }
     scenes {
@@ -102,20 +113,22 @@ private val rootScene = rootScene {
                 scene {
                     id = "earthScene"
                     renderObjects {
-                        bitmapRenderObject {
+                        gouraudShadingBitmapRenderObject {
                             id = "earth"
                             mesh = sphereMesh
                             bitmapRes = "src/main/resources/texture/earth.jpg"
+                            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
                         }
                     }
                     scenes {
                         scene {
                             id = "moonScene"
                             renderObjects {
-                                bitmapRenderObject {
+                                gouraudShadingBitmapRenderObject {
                                     id = "moon"
                                     mesh = sphereMesh
                                     bitmapRes = "src/main/resources/texture/moon.jpg"
+                                    lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
                                 }
                             }
                         }

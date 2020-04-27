@@ -21,10 +21,10 @@ private const val POLYGON_VERTICES = 3
 
 abstract class ObjectRenderer<T : RenderObject>(
     val renderObject: T,
-    private val camera: Camera,
-    private val projection: Projection,
-    private val viewPort: ViewPort,
-    private val sceneModelMatrix: Matrix = identityMatrix()
+    val camera: Camera,
+    val projection: Projection,
+    val viewPort: ViewPort,
+    val sceneModelMatrix: Matrix = identityMatrix()
 ) {
 
     val modelViewTransformMatrix = renderObject.modelViewTransform * sceneModelMatrix

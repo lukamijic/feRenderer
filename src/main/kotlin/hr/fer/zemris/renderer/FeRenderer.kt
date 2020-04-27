@@ -7,10 +7,10 @@ import hr.fer.zemris.math.transformations.identityMatrix
 import hr.fer.zemris.renderer.camera.Camera
 import hr.fer.zemris.renderer.input.KeyEventStorage
 import hr.fer.zemris.renderer.input.KeyListenerAdapter
-import hr.fer.zemris.renderer.objectRenderers.BitmapObjectRenderer
-import hr.fer.zemris.renderer.objectRenderers.FillObjectRenderer
-import hr.fer.zemris.renderer.objectRenderers.MeshObjectRenderer
+import hr.fer.zemris.renderer.lightning.Light
+import hr.fer.zemris.renderer.objectRenderers.*
 import hr.fer.zemris.renderer.projection.Projection
+import hr.fer.zemris.renderer.scene.RootScene
 import hr.fer.zemris.renderer.scene.Scene
 import hr.fer.zemris.renderer.viewport.ViewPort
 import java.awt.event.KeyEvent
@@ -38,16 +38,23 @@ class FeRenderer(
         )
     }
 
-    fun render(scene: Scene) {
-        scene.renderObjects.forEach { render(it, scene.globalModelViewMatrix) }
-        scene.children.forEach { render(it) }
+    fun render(scene: RootScene) {
+        scene.renderObjects.forEach { render(it, scene.globalModelViewMatrix, scene.lights) }
+        scene.children.forEach { render(it, scene.lights) }
     }
 
-    fun render(renderObject: RenderObject, sceneModelMatrix: Matrix = identityMatrix()): Unit =
+    private fun render(scene: Scene, lights: List<Light> = emptyList()) {
+        scene.renderObjects.forEach { render(it, scene.globalModelViewMatrix, lights) }
+        scene.children.forEach { render(it, lights) }
+    }
+
+    fun render(renderObject: RenderObject, sceneModelMatrix: Matrix = identityMatrix(), lights: List<Light> = emptyList()): Unit =
         when(renderObject) {
             is MeshRenderObject -> MeshObjectRenderer(renderObject, camera, projection, viewPort, sceneModelMatrix)
             is FillRenderObject -> FillObjectRenderer(renderObject, camera, projection, viewPort, sceneModelMatrix)
             is BitmapRenderObject -> BitmapObjectRenderer(renderObject, camera, projection, viewPort, sceneModelMatrix)
+            is GouraudShadingFillRenderObject -> GouraudShadingFillObjectRenderer(renderObject, camera, projection, viewPort, sceneModelMatrix, lights)
+            is GouraudShadingBitmapRenderObject -> GouraudShadingBitmapObjectRenderer(renderObject, camera, projection, viewPort, sceneModelMatrix, lights)
         }.render(display.canvas)
 
     fun processKeyEvents() {
