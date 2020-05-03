@@ -49,11 +49,11 @@ abstract class GouraudShadingObjectRenderer<T: GouardShadingRenderObject>(
         Intensity(0.0, 0.0, 0.0).apply {
             val vertexPosition = vertex.removeHomogeneousCoordinate()
             lights.forEach {
-                val toSourceBeforeNormalization = (vertexPosition - it.position)
+                val toSourceBeforeNormalization = (it.position - vertexPosition)
                 val toSource = toSourceBeforeNormalization.normalize()
-                val diffuseAngle = max(-(toSource * normal), 0.0)
+                val diffuseAngle = max((toSource * normal), 0.0)
 
-                val toEye = (vertexPosition - camera.cameraPosition).normalize()
+                val toEye = (camera.cameraPosition - vertexPosition).normalize()
                 val distance = toSourceBeforeNormalization.norm
                 val reflected = toSource + (2.0 * (normal - toSource)).normalize()
                 val mirrorAngleToN = (max((reflected * toEye), 0.0)).pow(renderObject.lightsCoefs.mirrorN)

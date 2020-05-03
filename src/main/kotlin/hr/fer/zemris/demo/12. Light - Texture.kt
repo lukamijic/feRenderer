@@ -88,14 +88,14 @@ private val rootScene = rootScene {
             bitmapRes = "src/main/resources/texture/grass.jpg"
             modelViewMatrix =
                 scaleYMatrix(0.1) * scaleXMatrix(20.0) * scaleZMatrix(20.0) * translateMatrix(0.0, -5.0, -10.0)
-            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
+            lightsCoefs = LightCoefs(0.2, 0.7, 0.1, 1.0, 0.01)
         }
         gouraudShadingBitmapRenderObject {
             id = "fox"
             mesh = foxMesh
             bitmapRes = "src/main/resources/texture/fox_texture.png"
             modelViewMatrix = scaleMatrix(0.1) * translateMatrix(0.0, -5.0, -10.0)
-            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
+            lightsCoefs = LightCoefs(0.2, 0.7, 0.1, 1.0, 0.01)
         }
     }
     scenes {
@@ -117,7 +117,7 @@ private val rootScene = rootScene {
                             id = "earth"
                             mesh = sphereMesh
                             bitmapRes = "src/main/resources/texture/earth.jpg"
-                            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
+                            lightsCoefs = LightCoefs(0.2, 0.7, 0.1, 1.0, 0.01)
                         }
                     }
                     scenes {
@@ -128,7 +128,7 @@ private val rootScene = rootScene {
                                     id = "moon"
                                     mesh = sphereMesh
                                     bitmapRes = "src/main/resources/texture/moon.jpg"
-                                    lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.01)
+                                    lightsCoefs = LightCoefs(0.2, 0.7, 0.1, 1.0, 0.01)
                                 }
                             }
                         }
