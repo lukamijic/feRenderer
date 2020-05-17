@@ -12,12 +12,14 @@ import hr.fer.zemris.resources.loader.BitmapLoader
 import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
+private const val WIDTH = 2000
+private const val HEIGHT = 1125
 fun main() {
     val renderer = FeRenderer(
-        Display(2000, 1500, "Texture"),
+        Display(WIDTH, HEIGHT, "Texture"),
         CameraImpl(position = vector(-1.88, 78.20, 75.65), target = vector(0, 0, -10f)),
-        FovPerspectiveProjection(Math.toRadians(45.0), 2000.0 / 1500.0, 0.1, 500.0),
-        ScreenSpaceTransform(2000, 1500)
+        FovPerspectiveProjection(Math.toRadians(45.0), WIDTH.toDouble() / HEIGHT.toDouble(), 0.1, 500.0),
+        ScreenSpaceTransform(WIDTH, HEIGHT)
     ).apply {
         keyEventProcessor = { keyEvent ->
             when (keyEvent.keyCode) {

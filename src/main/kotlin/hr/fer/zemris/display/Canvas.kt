@@ -3,14 +3,8 @@ package hr.fer.zemris.display
 import hr.fer.zemris.color.Color
 import hr.fer.zemris.color.RGB
 import hr.fer.zemris.display.depth.ZBuffer
-import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
-import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
-import hr.fer.zemris.geometry.model.Point
-import hr.fer.zemris.geometry.model.Point2i
-import hr.fer.zemris.geometry.model.Triangle
-import hr.fer.zemris.graphicsAlgorithms.draw.TrianglePointsProcessor
-import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
-import hr.fer.zemris.graphicsAlgorithms.lineclipping.LineClipping
+import hr.fer.zemris.graphicsAlgorithms.clipping.line.CohenSutherlandLineClippingAlgorithm
+import hr.fer.zemris.graphicsAlgorithms.clipping.line.LineClipping
 import hr.fer.zemris.graphicsAlgorithms.util.BoundingBox
 import java.lang.IndexOutOfBoundsException
 import java.util.*
@@ -18,7 +12,12 @@ import java.util.*
 class Canvas(
     val width: Int,
     val height: Int,
-    var lineClipping: LineClipping = CohenSutherlandLineClippingAlgorithm(0, width - 1, 0, height - 1)
+    var lineClipping: LineClipping = CohenSutherlandLineClippingAlgorithm(
+        0,
+        width - 1,
+        0,
+        height - 1
+    )
 ) {
 
     val canvasBoundingBox = BoundingBox(0, width - 1, 0, height - 1)

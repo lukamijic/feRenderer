@@ -15,12 +15,15 @@ import hr.fer.zemris.renderer.viewport.ScreenSpaceTransform
 import hr.fer.zemris.resources.loader.ObjLoader
 import java.awt.event.KeyEvent
 
+private const val WIDTH = 1600
+private const val HEIGHT = 900
+
 fun main() {
     val renderer = FeRenderer(
-        Display(2000, 1500, "Solar System"),
+        Display(WIDTH, HEIGHT, "Solar System"),
         CameraImpl(position = vector(0, 100, 0), target = vector(0, 0, -350)),
-        FovPerspectiveProjection(Math.toRadians(30.0), 2000.0 / 1500.0, 0.1, 1000.0),
-        ScreenSpaceTransform(2000, 1500)
+        FovPerspectiveProjection(Math.toRadians(45.0), WIDTH.toDouble() / HEIGHT.toDouble(), 0.1, 2000.0),
+        ScreenSpaceTransform(WIDTH, HEIGHT)
     ).apply {
         keyEventProcessor = { keyEvent ->
             when (keyEvent.keyCode) {
@@ -64,7 +67,7 @@ fun main() {
         solarSystem.child("mercuryScene")?.apply { modelViewMatrix = translateMatrix(-35.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 5)  }
         solarSystem.child("venusScene")?.apply { modelViewMatrix = translateMatrix(-60.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 4.5)  }
         solarSystem.child("earthScene")?.apply { modelViewMatrix = translateMatrix(-90.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 4)  }
-        solarSystem.child("moonScene")?.apply { modelViewMatrix = translateMatrix(-10.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 2)  }
+        solarSystem.child("moonScene")?.apply { modelViewMatrix = translateMatrix(-10.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 10)  }
         solarSystem.child("marsScene")?.apply { modelViewMatrix = translateMatrix(-120.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 3.5)  }
         solarSystem.child("jupiterScene")?.apply { modelViewMatrix = translateMatrix(-150.0, 0.0, 0.0) * rotateYMatrix(deltaRot * 2.0)  }
         renderer.render(solarSystem)
@@ -94,6 +97,13 @@ private val solarSystem = rootScene {
                     id = "sun"
                     mesh = sphereMesh
                     bitmapRes = "src/main/resources/texture/sun.jpg"
+                }
+                bitmapRenderObject {
+                    id = "skybox"
+                    meshRes = "src/main/resources/obj/cube.obj"
+                    bitmapRes = "src/main/resources/texture/space.jpg"
+                    enableCulling = false
+                    modelViewMatrix = scaleMatrix(1000.0)
                 }
             }
             scenes {
