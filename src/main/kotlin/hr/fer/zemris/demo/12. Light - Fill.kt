@@ -63,7 +63,7 @@ private val rootScene = rootScene {
         light {
             id = "light"
             position = vector(0, 0, 0)
-            ambientIntensity = Intensity(200.0)
+            ambientIntensity = Intensity(100.0)
             intensity = Intensity(200.0)
         }
     }
@@ -72,7 +72,7 @@ private val rootScene = rootScene {
             id = "teddy"
             meshRes = "src/main/resources/obj/teddy.obj"
             color = Color.RED
-            lightsCoefs = LightCoefs(0.2, 0.7, 0.5, 1.0, 0.1)
+            lightsCoefs = LightCoefs(0.15, 0.7, 0.5, 3.0, 0.1)
             modelViewMatrix = scaleMatrix(0.2) * translateMatrix(0.0, 0.0, -10.0)
         }
     }

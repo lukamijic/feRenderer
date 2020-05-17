@@ -1,4 +1,4 @@
-package hr.fer.zemris.graphicsAlgorithms.lineclipping
+package hr.fer.zemris.graphicsAlgorithms.clipping.line
 
 import hr.fer.zemris.geometry.model.Point2i
 

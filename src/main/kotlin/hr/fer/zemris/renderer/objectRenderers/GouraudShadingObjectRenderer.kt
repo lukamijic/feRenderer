@@ -1,6 +1,9 @@
 package hr.fer.zemris.renderer.objectRenderers
 
-import hr.fer.zemris.display.primitives.Primitive
+import hr.fer.zemris.geometry.model.Point
+import hr.fer.zemris.geometry.model.Triangle
+import hr.fer.zemris.graphicsAlgorithms.BarycentricCoordinatesCalculator
+import hr.fer.zemris.graphicsAlgorithms.interpolate.Interpolate
 import hr.fer.zemris.graphicsAlgorithms.util.removeHomogeneousCoordinate
 import hr.fer.zemris.math.extensions.times
 import hr.fer.zemris.math.matrix.Matrix
@@ -25,7 +28,7 @@ abstract class GouraudShadingObjectRenderer<T: GouardShadingRenderObject>(
     viewPort: ViewPort,
     sceneModelMatrix: Matrix = identityMatrix(),
     val lights: List<Light>
-) : ObjectRenderer<T>(renderObject, camera, projection, viewPort, sceneModelMatrix) {
+) : ClippableObjectRenderer<T>(renderObject, camera, projection, viewPort, sceneModelMatrix) {
 
     val lightNormals: Map<Int, Vector>
 
@@ -49,11 +52,11 @@ abstract class GouraudShadingObjectRenderer<T: GouardShadingRenderObject>(
         Intensity(0.0, 0.0, 0.0).apply {
             val vertexPosition = vertex.removeHomogeneousCoordinate()
             lights.forEach {
-                val toSourceBeforeNormalization = (vertexPosition - it.position)
+                val toSourceBeforeNormalization = (it.position - vertexPosition)
                 val toSource = toSourceBeforeNormalization.normalize()
-                val diffuseAngle = max(-(toSource * normal), 0.0)
+                val diffuseAngle = max((toSource * normal), 0.0)
 
-                val toEye = (vertexPosition - camera.cameraPosition).normalize()
+                val toEye = (camera.cameraPosition - vertexPosition).normalize()
                 val distance = toSourceBeforeNormalization.norm
                 val reflected = toSource + (2.0 * (normal - toSource)).normalize()
                 val mirrorAngleToN = (max((reflected * toEye), 0.0)).pow(renderObject.lightsCoefs.mirrorN)
@@ -65,6 +68,15 @@ abstract class GouraudShadingObjectRenderer<T: GouardShadingRenderObject>(
                 b += intensity.b
             }
         }
+
+    protected fun calculateClippedIntensity(sourceTriangle: Triangle, i1: Intensity, i2: Intensity, i3: Intensity, newPoint: Point) : Intensity {
+        val weight = BarycentricCoordinatesCalculator.calculateBarycentricCoordinate(sourceTriangle, newPoint.x, newPoint.y)
+        return Intensity(
+            Interpolate.interpolateDouble(i1.r, i2.r, i3.r, weight),
+            Interpolate.interpolateDouble(i1.g, i2.g, i3.g, weight),
+            Interpolate.interpolateDouble(i1.b, i2.b, i3.b, weight)
+        )
+    }
 
     private fun calculateIntensity(
         light: Light,

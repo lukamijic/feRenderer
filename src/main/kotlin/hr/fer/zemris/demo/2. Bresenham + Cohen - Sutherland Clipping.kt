@@ -5,7 +5,7 @@ import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.display.Display
 import hr.fer.zemris.display.primitives.LinePrimitive
 import hr.fer.zemris.geometry.model.Point2i
-import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
+import hr.fer.zemris.graphicsAlgorithms.clipping.line.CohenSutherlandLineClippingAlgorithm
 
 private val rectangle = listOf(
     LinePrimitive(Point2i(200, 200), Point2i(800, 200), Color.WHITE),
@@ -22,7 +22,14 @@ private val lines = listOf(
 )
 
 fun main() {
-    val display = Display(1024, 1024, "Cohen Sutherland Clipping", Canvas(1024, 1024, CohenSutherlandLineClippingAlgorithm(200, 800, 200, 800)))
+    val display = Display(1024, 1024, "Cohen Sutherland Clipping", Canvas(1024, 1024,
+        CohenSutherlandLineClippingAlgorithm(
+            200,
+            800,
+            200,
+            800
+        )
+    ))
     val canvas = display.canvas
     while (true) {
         canvas.clear(Color.BLACK)

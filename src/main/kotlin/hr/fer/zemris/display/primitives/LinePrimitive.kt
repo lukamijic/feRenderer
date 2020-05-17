@@ -4,8 +4,6 @@ import hr.fer.zemris.color.Color
 import hr.fer.zemris.display.Canvas
 import hr.fer.zemris.geometry.model.Point2i
 import hr.fer.zemris.graphicsAlgorithms.BresenhamLineAlgorithm
-import hr.fer.zemris.graphicsAlgorithms.lineclipping.CohenSutherlandLineClippingAlgorithm
-import hr.fer.zemris.graphicsAlgorithms.lineclipping.LineClipping
 
 data class LinePrimitive(
     val p1: Point2i,

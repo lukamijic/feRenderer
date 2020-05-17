@@ -35,8 +35,10 @@ abstract class ObjectRenderer<T : RenderObject>(
     val modelTransformedNormals: List<Vector>
     val normalIndices: List<Int>
 
-    val textureProjections = mutableListOf<Double>()
-    val points : List<Point>
+    val clippingSpaceVertices: List<Vector>
+    val points: List<Point>
+    val textureProjections: List<Double>
+
 
     init {
         modelViewTransformedVertices =
@@ -48,40 +50,32 @@ abstract class ObjectRenderer<T : RenderObject>(
 
         vertexIndices = renderObject.mesh.vertices.indices
 
-        val indexedTransformedNormals =  transformedNormals(renderObject.mesh, modelViewTransformMatrix)
+        val indexedTransformedNormals = transformedNormals(renderObject.mesh, modelViewTransformMatrix)
             ?: calculateNormalsFromVertices(modelViewTransformedVertices, vertexIndices)
 
         modelTransformedNormals = indexedTransformedNormals.values
         normalIndices = indexedTransformedNormals.indices
 
         val cameraAndProjectionMatrix = camera.cameraMatrix * projection.projectionMatrix
-        points = modelViewTransformedVertices
+        clippingSpaceVertices = modelViewTransformedVertices
             .map { it.toMatrix(Vector.ToMatrix.ROW) }
             .map { it * cameraAndProjectionMatrix }
-            .map {
-                textureProjections.add(it[0, 3])
-                it * (1f / it[0, 3])
-            }
+            .map(Matrix::toVector)
+
+        textureProjections = clippingSpaceVertices.map { it[3] }
+
+        points = perspectiveDivideAndViewPortTransform(clippingSpaceVertices)
+    }
+
+    abstract fun render(canvas: Canvas)
+
+    abstract fun toPrimitive(index: Int): Primitive
+
+    fun perspectiveDivideAndViewPortTransform(vertices: List<Vector>): List<Point> =
+        vertices.map { it.toMatrix(Vector.ToMatrix.ROW) }
+            .map { it * (1f / it[0, 3]) }
             .map { it * viewPort.viewPortMatrix }
             .map { Point(ceil(it[0, 0]).toInt(), ceil(it[0, 1]).toInt(), it[0, 2]) }
-    }
-
-    fun render(canvas: Canvas) {
-        for (i in vertexIndices.indices step 3) {
-            val normal = modelTransformedNormals[normalIndices[i]]
-            if (renderObject.enableCulling) {
-                val v = modelViewTransformedVertices[vertexIndices[i]].removeHomogeneousCoordinate()
-
-                if (!Culling.cull(normal, camera.cameraPosition - v)) {
-                    continue
-                }
-            }
-
-            toPrimitive(i).draw(canvas)
-        }
-    }
-
-    abstract fun toPrimitive(index: Int) : Primitive
 
     private fun transformedNormals(mesh: Mesh, modelViewTransformMatrix: Matrix) = mesh.normals?.let {
         val normalTransform =
